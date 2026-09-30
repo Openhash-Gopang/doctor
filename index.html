@@ -333,6 +333,7 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
         <ul class="overview-list">
           <li>놓치면 안 되는 진단은 배제 근거가 없으면 남김</li>
           <li>가설 옹호자·반증자 공방, 최대 4왕복</li>
+          <li>과목 호출은 선별·가설 추출 이후, 가장 구체적인 과목(분과 우선)에 한 번에 하나</li>
           <li>결과는 "진단 참고"이며 확진이 아님</li>
         </ul>
       </div>
@@ -384,14 +385,29 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
     <div class="section-tag reveal">Specialties</div>
     <h2 class="section-title reveal">진료과목별 <strong>전문 AI</strong></h2>
     <div class="section-body reveal">
-      <p>대한민국 전문과목 26개 전부에 과목 SP가 있습니다. 과목 SP는 공통 골격(규칙 C1–C8) 위에 과목 고유의 위험 신호·필수 확인 항목·놓치면 안 되는 진단·처치 범위를 붙여 조립합니다. 과목 훅은 공통 규칙을 약화할 수 없고 추가만 할 수 있습니다. 과목 AI는 진단을 확정하지 않고, 총괄이 던진 좁은 질문 하나에 소견을 돌려줍니다.</p>
+      <p>대한민국 전문과목 26개 전부와 내과 9·소아청소년과 6개 세부 분과, 모두 41개의 과목 SP가 있습니다. 총괄 AI는 위험 신호 선별과 가설 추출을 마친 뒤 필요할 때만, 가장 구체적인 과목(분과가 있으면 분과)에 좁은 질문 하나를 호출합니다. 과목 SP는 공통 골격(규칙 C1–C8) 위에 과목 고유의 위험 신호·필수 확인 항목·놓치면 안 되는 진단·처치 범위를 붙여 조립합니다. 과목 훅은 공통 규칙을 약화할 수 없고 추가만 할 수 있습니다. 과목 AI는 진단을 확정하지 않고, 총괄이 던진 좁은 질문 하나에 소견을 돌려줍니다.</p>
     </div>
     <div class="mwrap reveal"><table class="mtable">
       <thead><tr><th>진료과목</th><th>호출 id</th><th>역할과 특이 규칙</th><th>상태</th></tr></thead>
       <tbody>
         <tr><td class="axis">응급의학과</td><td>kdoctor-emergency</td><td>시간 민감 can't-miss 선별, 119 안내, 응급 전 안전 조치. 처방·시술은 "응급실 평가 후"까지만</td><td><span class="st st-part">초안</span></td></tr>
         <tr><td class="axis">내과</td><td>kdoctor-internal</td><td>성인 전신·장기 증상. 세부 분과(순환기·소화기 등) SP는 아직 없는 일반 내과</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 순환기내과</td><td>kdoctor-cardiology</td><td>흉통·실신·심계항진에서 급성 관동맥 증후군·대동맥 박리·폐색전증 배제, 운동 중 실신·급사 가족력</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 호흡기내과</td><td>kdoctor-pulmonology</td><td>호흡곤란 응급 기준, 객혈, 만성 기침의 결핵·악성 종양 배제</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 소화기내과</td><td>kdoctor-gastroenterology</td><td>토혈·흑색변·황달·급성 복증(외과 연계), 삼킴곤란·체중 감소 경고 증상</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 내분비대사내과</td><td>kdoctor-endocrinology</td><td>당뇨 케톤산증·저혈당·갑상선 위기·부신 위기 신호. 혈당 수치는 환자 제공값만</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 신장내과</td><td>kdoctor-nephrology</td><td>급성 소변 감소, 부종+고혈압, 전해질 이상 증상, 신독성 약물 주의(신기능 보정 용량은 계산하지 않음)</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 혈액종양내과</td><td>kdoctor-hematology-oncology</td><td>항암 치료 중 발열(응급), 비정상 출혈·멍, 림프절·체중 감소. 병기·예후 판단은 하지 않음</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 감염내과</td><td>kdoctor-infectious-disease</td><td>패혈증 신호, 여행·접촉·노출 이력, 신고 대상 감염병 가능성은 보건소 안내</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 알레르기내과</td><td>kdoctor-allergy</td><td>아나필락시스 신호 최우선, 원인 물질과 노출 시간 관계</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 류마티스내과</td><td>kdoctor-rheumatology</td><td>뜨겁고 붓는 관절+발열(화농성 관절염 배제), 혈관염·거대세포동맥염 신호, 면역억제 중 감염</td><td><span class="st st-part">초안</span></td></tr>
         <tr><td class="axis">소아청소년과</td><td>kdoctor-pediatrics</td><td>연령별 위험 선별, 보호자용 복귀 기준. 소아 용량은 체중 확인값+출처 있을 때만, 생후 3개월 미만은 항상 대면 진료</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 신생아(생후 28일 이내)</td><td>kdoctor-neonatology</td><td>생후 28일 이내 발열·처짐·수유 거부·황달·호흡 이상은 응급 우선, 항상 대면 진료</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 소아감염</td><td>kdoctor-pediatric-infectious</td><td>발열의 정도보다 처짐·호흡·수분·소변량, 5일 이상 발열(가와사키병) 신호, 예방접종 상태</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 소아소화영양</td><td>kdoctor-pediatric-gastro-nutrition</td><td>탈수, 담즙성 구토·혈변·장중첩증 시사 발작성 울음, 이물·독극물(배터리·자석) 삼킴</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 소아호흡알레르기</td><td>kdoctor-pediatric-respiratory-allergy</td><td>늑간 함몰·콧구멍 벌렁임·청색·무호흡, 크룹·모세기관지염·천식·이물 흡인</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 소아신경</td><td>kdoctor-pediatric-neurology</td><td>5분 이상 경련, 첫 무열 경련, 두부 외상 후 변화, 대천문 팽륜·목 경직</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">└ 소아심장</td><td>kdoctor-pediatric-cardiology</td><td>영아 청색·수유 시 호흡곤란, 학령기 운동 중 흉통·실신, 심잡음만으로 진단하지 않음</td><td><span class="st st-part">초안</span></td></tr>
         <tr><td class="axis">피부과</td><td>kdoctor-dermatology</td><td>증상 사진 관찰 소견(SP-29-IMG) 기반 형태학 감별. 사진만으로 병명 확정·피부암 배제 금지</td><td><span class="st st-part">초안</span></td></tr>
         <tr><td class="axis">가정의학과</td><td>kdoctor-family</td><td>미분화 증상의 1차 선별, 만성질환 연속 관리, 적절한 전문과 의뢰</td><td><span class="st st-part">초안</span></td></tr>
         <tr><td class="axis">신경과</td><td>kdoctor-neurology</td><td>뇌졸중 시간 창(발병 시각), 일과성 증상도 응급, 두통·어지럼·경련 위험 신호</td><td><span class="st st-part">초안</span></td></tr>
@@ -418,7 +434,7 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
       </tbody>
     </table></div>
     <div class="callout reveal">
-      26개 모두 초안이며 전문의 검토를 거치지 않았습니다. 위험 신호와 기준은 예시라 완전하지 않습니다. 세부 분과(예: 순환기내과) SP는 아직 없고 소속 과목이 대신합니다. 검토 전에는 일반 공개하지 않습니다.
+      41개 모두 초안이며 전문의 검토를 거치지 않았습니다. 위험 신호와 기준은 예시라 완전하지 않습니다. 외과·산부인과·정형외과 등 나머지 과목의 세부 분과 SP는 아직 없고 소속 과목이 대신합니다. 총괄이 호출 시점 규칙을 실제 대화에서 지키는지도 아직 측정하지 않았습니다. 검토 전에는 일반 공개하지 않습니다.
     </div>
   </div>
 </section>
@@ -484,8 +500,8 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
       </div>
       <div class="rstep done">
         <div class="rlabel">2 · 완료</div>
-        <h4>과목 SP 26종 + 공통 골격</h4>
-        <p>전문과목 26개 전부의 훅과 공통 규칙 C1–C8. 조립 도구가 공통 규칙을 약화하는 훅을 lint로 막고, 레지스트리와 SP 안의 id가 어긋나면 테스트가 실패합니다.</p>
+        <h4>과목 SP 41종 + 공통 골격</h4>
+        <p>전문과목 26개와 내과 9·소아 6 세부 분과의 훅과 공통 규칙 C1–C8. 조립 도구가 공통 규칙을 약화하는 훅을 lint로 막고, 레지스트리와 SP 안의 id가 어긋나면 테스트가 실패합니다.</p>
         <span class="rdate">hondi PR #496</span>
       </div>
       <div class="rstep done">
@@ -532,8 +548,8 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
       </div>
       <div class="rstep held">
         <div class="rlabel">10 · 보류</div>
-        <h4>세부 분과 SP</h4>
-        <p>내과의 순환기·소화기·내분비, 외과의 세부 분야 등 세부 분과 SP는 아직 없고 소속 과목 SP가 대신합니다. 세분화는 사용량과 전문의 의견에 따라 결정합니다.</p>
+        <h4>나머지 세부 분과 SP</h4>
+        <p>내과 9개·소아 6개 외에 외과·산부인과·정형외과·신경과·정신건강의학과 등의 세부 분과 SP는 아직 없고 소속 과목 SP가 대신합니다. 세분화는 사용량과 전문의 의견에 따라 결정합니다.</p>
         <span class="rdate">후속</span>
       </div>
     </div>
