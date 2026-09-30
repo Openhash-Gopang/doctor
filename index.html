@@ -263,6 +263,7 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
     <span>K-Doctor</span>
   </a>
   <nav class="site-nav-links">
+    <a href="#orchestration">협진 호출 흐름</a>
     <a href="#consult">진료 상담</a>
     <a href="#flow">진료 흐름</a>
     <a href="#specialties">진료과목</a>
@@ -294,6 +295,77 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
     <a href="https://github.com/Openhash-Gopang/hondi/blob/main/prompts/SP-29_kdoctor_v0_1.txt" target="_blank" rel="noopener">SP-29 총괄 (초안)</a>
     <a href="https://github.com/Openhash-Gopang/hondi/blob/main/src/gopang/ai/hondi-doctor-verdict.js" target="_blank" rel="noopener">hondi-doctor-verdict.js</a>
     <a href="https://github.com/Openhash-Gopang/hondi/blob/main/docs/kdoctor/design-notes.md" target="_blank" rel="noopener">설계 노트</a>
+  </div>
+</section>
+
+<section class="section section-alt" id="orchestration">
+  <div class="section-inner">
+    <div class="section-tag reveal">Orchestration — 총괄 AI의 협진 호출 흐름</div>
+    <h2 class="section-title reveal">증상이 들어오면 <strong>가장 적합한 과목 AI</strong>가 불려 나와 총괄 AI에 보고합니다</h2>
+    <div class="section-body reveal">
+      <p>가상의 환자가 증상을 입력하든, 담당 의사가 환자의 증상을 대신 입력하든 경로는 같습니다. 입력은 먼저 총괄 AI(SP-29)가 받고, 위험 신호를 선별한 뒤, 분석에 가장 적합한 진료과목 AI(41개 과목 중 하나)에게 좁은 질문을 넘깁니다. 과목 AI는 분석과 진단 소견을 총괄 AI에 돌려주고, 총괄 AI가 이를 통합해 최종 진단 참고 카드를 만듭니다. 이 흐름이 실제로 작동하는지는 라이브 테스트로 확인합니다.</p>
+    </div>
+    <div class="stage-grid reveal">
+      <div class="stage">
+        <div class="step-tag">① 입력</div>
+        <h3>환자 또는 담당 의사가 증상 입력</h3>
+        <p class="desc">아래 진료 상담 창에 증상을 문장으로 적고, 필요하면 사진·파일을 붙이거나 건강기록(PDV) 조회를 허용합니다.</p>
+        <ul class="overview-list">
+          <li>입력자가 환자이든 의사이든 같은 경로로 처리</li>
+          <li>현재는 모든 사용자를 의료인으로 가정(면허 확인은 최종 단계에 추가)</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <div class="step-tag">② 총괄 AI 선별</div>
+        <h3>위험 신호 점검과 감별 가설 추출</h3>
+        <p class="desc">총괄 AI(SP-29)가 협진보다 먼저 위험 신호를 확인하고, 증상에서 감별 가설을 뽑습니다.</p>
+        <ul class="overview-list">
+          <li>흉통·뇌졸중 징후 등 위험 신호가 있으면 협진 없이 즉시 119 안내</li>
+          <li>위험 신호가 없으면 가설을 가장 잘 가려 줄 과목을 고름</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <div class="step-tag">③ 과목 선택·의뢰</div>
+        <h3>가장 구체적인 과목에 좁은 질문 하나</h3>
+        <p class="desc">총괄 AI가 <code>[CONSULT_SPECIALIST: id=과목, question=좁은 질문]</code> 형식으로 의뢰합니다. 질문에는 그 과목이 판단하는 데 필요한 증상·경과·기록만 담깁니다.</p>
+        <ul class="overview-list">
+          <li>세부과목이 있으면 세부과목을 우선(예: 내과 대신 순환기내과, 소아청소년과 대신 신생아과)</li>
+          <li>등록된 41개 과목 id만 허용, 모르는 id는 오류로 되돌림</li>
+        </ul>
+      </div>
+    </div>
+    <div class="stage-grid reveal">
+      <div class="stage">
+        <div class="step-tag">④ 과목 AI 호출</div>
+        <h3>과목별 전문 AI가 분석</h3>
+        <p class="desc">위젯이 과목별 SP에 공통 기반 지침을 합쳐 호출합니다. 과목 AI는 총괄 AI가 넘긴 질문에 대해서만 분석합니다(최대 2,500토큰).</p>
+        <ul class="overview-list">
+          <li>과목 AI는 자기 과목 관점의 감별·권고 검사·주의점을 정리</li>
+          <li>확정 진단이 아니라 진단 참고로만 답하도록 지시</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <div class="step-tag">⑤ 과목 보고</div>
+        <h3>분석·진단 소견을 총괄 AI에 보고</h3>
+        <p class="desc">과목 AI의 답(최대 6,000자)이 <code>[CONSULT_SPECIALIST 결과 — 과목명]</code> 블록으로 총괄 AI에게 돌아갑니다.</p>
+        <ul class="overview-list">
+          <li>상담 화면 상태줄에 호출된 과목이 “협진: …”으로 표시</li>
+          <li>한 번에 최대 3과목, 최대 3라운드, 같은 과목 중복 호출은 건너뜀</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <div class="step-tag">⑥ 총괄 통합·검증</div>
+        <h3>진단 참고 카드 생성</h3>
+        <p class="desc">총괄 AI가 과목 소견을 통합해 <code>[DIAGNOSIS_REPORT]</code>를 냅니다. 종합 확신도와 응급 전환은 AI가 아니라 코드가 다시 계산해 제한합니다.</p>
+        <ul class="overview-list">
+          <li>검증을 통과한 카드만 표시, 실패하면 한 번 재생성</li>
+          <li>계속 실패하면 대면 진료 권고와 119·109 안내로 안전 처리</li>
+        </ul>
+      </div>
+    </div>
+    <div class="section-body reveal" style="margin-top:22px">
+      <p><strong>라이브 테스트 확인 기준.</strong> (1) 증상 입력 후 상태줄에 “협진: 과목명”이 나타나는가, (2) 그 과목이 증상에 가장 적합한가, (3) 과목 소견이 총괄 AI의 최종 카드에 반영되는가, (4) 응급 증상에서는 협진 없이 119 안내가 나오는가. 협진 결과는 진단 참고이며 확정 진단이 아닙니다.</p>
+    </div>
   </div>
 </section>
 
