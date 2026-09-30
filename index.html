@@ -263,6 +263,7 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
     <span>K-Doctor</span>
   </a>
   <nav class="site-nav-links">
+    <a href="#consult">진료 상담</a>
     <a href="#flow">진료 흐름</a>
     <a href="#specialties">진료과목</a>
     <a href="#methods">방법론 상세</a>
@@ -275,7 +276,7 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
   </div>
 </div>
 <div class="site-strip">
-  <a class="site-strip-text" href="#roadmap">응급이면 즉시 119 · 자살예방상담전화 109 · 초안 단계 · 아직 이용자에게 서빙되지 않음 · 진행 현황 보기 →</a>
+  <a class="site-strip-text" href="#roadmap">응급이면 즉시 119 · 자살예방상담전화 109 · 초안 단계(실사용자 대상 아님) · 진행 현황 보기 →</a>
   <a class="site-strip-support-btn" href="https://estate.hondi.net" target="_blank" rel="noopener">K-Estate 보러 가기</a>
 </div>
 
@@ -284,6 +285,7 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
   <h1><span class="l1">진료과목별 AI가 증상을 듣고</span><br><span class="l2">진단 참고와 처치 제안을 돕습니다</span></h1>
   <p class="site-hero-sub">의료인을 위한 임상 의사결정 지원 도구입니다. 증상(문자·사진)을 접수하면 위험 신호부터 선별하고, 진료과목별 전문 AI의 소견을 총괄 AI가 모아 진단 참고와 처방/처치 제안을 냅니다. 종합 확신도와 응급 전환은 AI가 아니라 결정론적 코드가 다시 계산합니다.</p>
   <div class="site-hero-actions">
+    <a href="#consult"><span class="dot"></span>진료 상담</a>
     <a href="#flow"><span class="dot"></span>진료 흐름 보기</a>
     <a href="#specialties"><span class="dot"></span>진료과목</a>
     <a href="https://github.com/Openhash-Gopang/hondi" target="_blank" rel="noopener"><span class="dot"></span>구현 코드 보기</a>
@@ -292,6 +294,17 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
     <a href="https://github.com/Openhash-Gopang/hondi/blob/main/prompts/SP-29_kdoctor_v0_1.txt" target="_blank" rel="noopener">SP-29 총괄 (초안)</a>
     <a href="https://github.com/Openhash-Gopang/hondi/blob/main/src/gopang/ai/hondi-doctor-verdict.js" target="_blank" rel="noopener">hondi-doctor-verdict.js</a>
     <a href="https://github.com/Openhash-Gopang/hondi/blob/main/docs/kdoctor/design-notes.md" target="_blank" rel="noopener">설계 노트</a>
+  </div>
+</section>
+
+<section class="section" id="consult">
+  <div class="section-inner">
+    <div class="section-tag reveal">Consultation — 진료 상담</div>
+    <h2 class="section-title reveal">증상을 말씀하시면 <strong>위험 신호부터</strong> 확인합니다</h2>
+    <div class="section-body reveal">
+      <p>총괄 AI가 위험 신호를 먼저 점검하고, 필요하면 진료과목별 전문 AI에 협진을 의뢰한 뒤, 코드가 다시 계산·검증한 결과만 카드로 보여 줍니다. 초안 단계이며 실사용자 대상이 아닙니다. 현재는 모든 사용자를 의료인으로 가정해 전문가 뷰(용량 포함)를 냅니다. 응급이면 즉시 119, 자살 위기는 109(24시간)에 연락하십시오.</p>
+    </div>
+    <div class="reveal" style="margin-top:22px"><div id="kdoctor-chat"></div></div>
   </div>
 </section>
 
@@ -371,20 +384,41 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
     <div class="section-tag reveal">Specialties</div>
     <h2 class="section-title reveal">진료과목별 <strong>전문 AI</strong></h2>
     <div class="section-body reveal">
-      <p>과목 SP는 공통 골격(규칙 C1–C8) 위에 과목 고유의 위험 신호·필수 확인 항목·놓치면 안 되는 진단·처치 범위를 붙여 조립합니다. 과목 훅은 공통 규칙을 약화할 수 없고 추가만 할 수 있습니다. 과목 AI는 진단을 확정하지 않고, 총괄이 던진 좁은 질문 하나에 소견을 돌려줍니다.</p>
+      <p>대한민국 전문과목 26개 전부에 과목 SP가 있습니다. 과목 SP는 공통 골격(규칙 C1–C8) 위에 과목 고유의 위험 신호·필수 확인 항목·놓치면 안 되는 진단·처치 범위를 붙여 조립합니다. 과목 훅은 공통 규칙을 약화할 수 없고 추가만 할 수 있습니다. 과목 AI는 진단을 확정하지 않고, 총괄이 던진 좁은 질문 하나에 소견을 돌려줍니다.</p>
     </div>
     <div class="mwrap reveal"><table class="mtable">
       <thead><tr><th>진료과목</th><th>호출 id</th><th>역할과 특이 규칙</th><th>상태</th></tr></thead>
       <tbody>
         <tr><td class="axis">응급의학과</td><td>kdoctor-emergency</td><td>시간 민감 can't-miss 선별, 119 안내, 응급 전 안전 조치. 처방·시술은 "응급실 평가 후"까지만</td><td><span class="st st-part">초안</span></td></tr>
-        <tr><td class="axis">내과</td><td>kdoctor-internal</td><td>성인 전신·장기 증상. 분과(순환기·소화기 등)로 쪼개지 않은 일반 내과</td><td><span class="st st-part">초안</span></td></tr>
-        <tr><td class="axis">소아청소년과</td><td>kdoctor-pediatrics</td><td>연령별 위험 선별, 보호자용 복귀 기준. 용량은 체중 확인값이 있고 출처가 있을 때만, 생후 3개월 미만은 항상 대면 진료</td><td><span class="st st-part">초안</span></td></tr>
-        <tr><td class="axis">피부과</td><td>kdoctor-dermatology</td><td>증상 사진 관찰 소견(SP-29-IMG) 기반 형태학 감별. 사진만으로 병명을 확정하거나 피부암을 배제하지 않음</td><td><span class="st st-part">초안</span></td></tr>
-        <tr><td class="axis">그 외 과목</td><td>—</td><td>전문 SP 없음. 총괄이 일반 범위로 판단하고 그 사실을 결과에 밝힘</td><td><span class="st st-none">미반영</span></td></tr>
+        <tr><td class="axis">내과</td><td>kdoctor-internal</td><td>성인 전신·장기 증상. 세부 분과(순환기·소화기 등) SP는 아직 없는 일반 내과</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">소아청소년과</td><td>kdoctor-pediatrics</td><td>연령별 위험 선별, 보호자용 복귀 기준. 소아 용량은 체중 확인값+출처 있을 때만, 생후 3개월 미만은 항상 대면 진료</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">피부과</td><td>kdoctor-dermatology</td><td>증상 사진 관찰 소견(SP-29-IMG) 기반 형태학 감별. 사진만으로 병명 확정·피부암 배제 금지</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">가정의학과</td><td>kdoctor-family</td><td>미분화 증상의 1차 선별, 만성질환 연속 관리, 적절한 전문과 의뢰</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">신경과</td><td>kdoctor-neurology</td><td>뇌졸중 시간 창(발병 시각), 일과성 증상도 응급, 두통·어지럼·경련 위험 신호</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">정신건강의학과</td><td>kdoctor-psychiatry</td><td>자살·타해 위험 선별이 진단보다 먼저(109·119), 진단 라벨링 신중, 수단·방법 정보 금지</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">외과</td><td>kdoctor-surgery</td><td>급성 복증 신호, 외상·창상, 금식 등 처치 판단은 의사에게</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">정형외과</td><td>kdoctor-orthopedics</td><td>신경혈관 손상·구획증후군·개방골절 신호, 근골격 외상·통증</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">신경외과</td><td>kdoctor-neurosurgery</td><td>두부 외상·척수 압박(마미증후군) 신호, 급성 신경학적 변화</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">흉부외과</td><td>kdoctor-thoracic-surgery</td><td>흉부 대동맥·기흉·흉부 외상 신호와 응급 전환</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">성형외과</td><td>kdoctor-plastic-surgery</td><td>화상·외상 창상·감염 신호. 미용 목적 요청은 진단 참고 범위 밖(대면 상담 안내)</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">마취통증의학과</td><td>kdoctor-anesthesiology-pain</td><td>통증의 위험 신호와 진통제 오남용 위험 인지. 시술(주사·신경차단)은 의사 평가 후</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">산부인과</td><td>kdoctor-obstetrics-gynecology</td><td>임신 가능성 확인이 모든 처치 제안보다 먼저, 임신 중 위험 신호, 자궁외 임신 배제</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">안과</td><td>kdoctor-ophthalmology</td><td>시력 위협 신호(갑작스런 시력 저하·화학물질·외상)는 즉시 응급</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">이비인후과</td><td>kdoctor-ent</td><td>기도 폐쇄 신호, 소아 이물, 갑작스러운 청력 저하, 지속 비출혈</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">비뇨의학과</td><td>kdoctor-urology</td><td>급성 음낭 통증(고환 염전) 시간 민감, 요폐, 신결석+발열, 혈뇨</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">영상의학과</td><td>kdoctor-radiology</td><td>[보고서 자문] 환자가 제공한 영상 판독문의 의미 설명. 직접 판독하지 않음</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">방사선종양학과</td><td>kdoctor-radiation-oncology</td><td>[보고서 자문] 방사선 치료 경과 중 위험 신호 안내. 치료 결정은 담당 의사</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">병리과</td><td>kdoctor-pathology</td><td>[보고서 자문] 병리 보고서 문구 설명. 암 여부를 최종 판정하지 않음</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">진단검사의학과</td><td>kdoctor-laboratory-medicine</td><td>[보고서 자문] 환자가 제공한 검사 수치의 의미 설명. 단일 수치로 진단하지 않음</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">결핵과</td><td>kdoctor-tuberculosis</td><td>장기 기침·객혈·야간 발한·접촉력, 전염성 가능 시 마스크·보건소 안내</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">재활의학과</td><td>kdoctor-rehabilitation</td><td>급성 마비·배뇨 장애 등 신경학적 위험 신호 선별 후 일반 수준의 운동·재활 소견</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">핵의학과</td><td>kdoctor-nuclear-medicine</td><td>[보고서 자문] 핵의학 검사 결과 설명, 검사 전 임신·수유 확인은 검사실 안내로</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">직업환경의학과</td><td>kdoctor-occupational-environmental</td><td>직업·노출 이력과 증상의 시간 관계. 산재 여부는 판단하지 않고 공식 경로 안내</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">예방의학과</td><td>kdoctor-preventive-medicine</td><td>예방·검진·예방접종 상담. 일정은 질병관리청·국가검진 최신 기준 확인</td><td><span class="st st-part">초안</span></td></tr>
       </tbody>
     </table></div>
     <div class="callout reveal">
-      과목 훅의 위험 신호와 기준은 예시이며 완전하지 않고, 전문의 검토를 거치지 않았습니다. 검토 전에는 실사용자 경로를 열지 않습니다.
+      26개 모두 초안이며 전문의 검토를 거치지 않았습니다. 위험 신호와 기준은 예시라 완전하지 않습니다. 세부 분과(예: 순환기내과) SP는 아직 없고 소속 과목이 대신합니다. 검토 전에는 일반 공개하지 않습니다.
     </div>
   </div>
 </section>
@@ -413,7 +447,7 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
       </tbody>
     </table></div>
     <div class="callout reveal">
-      "구현"은 코드 유닛 테스트(46건)로 검증됐다는 뜻입니다. 프롬프트의 규칙을 LLM이 실제 대화에서 지키는지는 아직 측정하지 않았습니다. 코드는 SP가 낸 확신도·결론 유형을 참고로만 기록하고 재계산한 값을 채택합니다.
+      "구현"은 코드 유닛 테스트로 검증됐다는 뜻입니다(검증기 46건). 프롬프트의 규칙을 LLM이 실제 대화에서 지키는지는 아직 측정하지 않았습니다. 코드는 SP가 낸 확신도·결론 유형을 참고로만 기록하고 재계산한 값을 채택합니다.
     </div>
   </div>
 </section>
@@ -439,7 +473,7 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
   <div class="section-inner">
     <div class="section-tag reveal">Current Status</div>
     <h2 class="section-title reveal">진행 현황 <strong>1–10</strong></h2>
-    <div class="section-body reveal"><p>이 페이지는 소개용이며 실제 상담 서비스는 아직 운영 중이 아닙니다. 아래 10개 항목은 2026-09-30 기준으로 정리한 상태이며 낙관적으로 반올림하지 않았습니다.</p></div>
+    <div class="section-body reveal"><p>상담 창은 초안 단계로 붙어 있으며 실사용자 대상 서비스는 아직 아닙니다. 아래 10개 항목은 2026-09-30 기준으로 정리한 상태이며 낙관적으로 반올림하지 않았습니다.</p></div>
 
     <div class="roadmap-grid reveal">
       <div class="rstep done">
@@ -450,20 +484,20 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
       </div>
       <div class="rstep done">
         <div class="rlabel">2 · 완료</div>
-        <h4>과목 SP 4종 + 공통 골격</h4>
-        <p>응급의학과·내과·소아청소년과·피부과 훅과 공통 규칙 C1–C8. 조립 도구가 공통 규칙을 약화하는 훅을 lint로 막습니다.</p>
+        <h4>과목 SP 26종 + 공통 골격</h4>
+        <p>전문과목 26개 전부의 훅과 공통 규칙 C1–C8. 조립 도구가 공통 규칙을 약화하는 훅을 lint로 막고, 레지스트리와 SP 안의 id가 어긋나면 테스트가 실패합니다.</p>
         <span class="rdate">hondi PR #496</span>
       </div>
       <div class="rstep done">
         <div class="rlabel">3 · 완료</div>
         <h4>결정론 검증기 + 테스트</h4>
-        <p><code>hondi-doctor-verdict.js</code> — 확신도 min 재계산, 위험 신호 강제, 근거·용량 검증, 케이스 단계 전이. 유닛 테스트 46건 통과(SP가 실제 대화에서 규칙을 지키는지는 검증하지 않음).</p>
+        <p><code>hondi-doctor-verdict.js</code> — 확신도 min 재계산, 위험 신호 강제, 근거·용량 검증, 케이스 단계 전이. 검증기 유닛 테스트 46건 통과, 상담 창 로직·SP 조립까지 합쳐 89건(SP가 실제 대화에서 규칙을 지키는지는 검증하지 않음).</p>
         <span class="rdate">hondi PR #496</span>
       </div>
       <div class="rstep done">
         <div class="rlabel">4 · 완료</div>
-        <h4>doctor.hondi.net 소개 페이지</h4>
-        <p>이 페이지입니다. 상담 채팅은 아직 연결되지 않았습니다.</p>
+        <h4>doctor.hondi.net 소개 페이지 + 진료 상담 창</h4>
+        <p>이 페이지입니다. 상담 창은 hondi.net의 SP 정본을 직접 불러 총괄→과목 협진→코드 검증을 수행합니다. 사진 업로드는 아직 연결되지 않았습니다.</p>
         <span class="rdate">doctor 저장소</span>
       </div>
       <div class="rstep blocked">
@@ -493,13 +527,13 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
       <div class="rstep partial">
         <div class="rlabel">9 · 부분</div>
         <h4>SP 등록·배선·이미지 호출</h4>
-        <p>SP-29 계열은 gwp-registry·sp-catalog·call-ai에 등록되지 않았고, 증상 사진 관찰 프롬프트(SP-29-IMG)를 호출하는 코드가 없습니다. 프롬프트·검증기만 저장소에 있습니다.</p>
-        <span class="rdate">초안만</span>
+        <p>상담 창은 위젯이 직접 /ai/chat을 호출하는 방식이며, SP-29 계열은 gwp-registry·sp-catalog·call-ai에는 등록되지 않았습니다. 별도 rate-limit·로그인 게이트가 없고, 증상 사진 관찰 프롬프트(SP-29-IMG)를 호출하는 코드도 없습니다.</p>
+        <span class="rdate">부분 연결</span>
       </div>
       <div class="rstep held">
         <div class="rlabel">10 · 보류</div>
-        <h4>나머지 진료과목</h4>
-        <p>정형외과·산부인과·정신건강의학과·안과·이비인후과·신경과·비뇨의학과 등은 전문 SP가 없어 총괄이 일반 범위로 판단하고 "전문 SP 부재"를 밝힙니다. 내과 분과 세분화도 사용량과 전문의 의견에 따라 결정합니다.</p>
+        <h4>세부 분과 SP</h4>
+        <p>내과의 순환기·소화기·내분비, 외과의 세부 분야 등 세부 분과 SP는 아직 없고 소속 과목 SP가 대신합니다. 세분화는 사용량과 전문의 의견에 따라 결정합니다.</p>
         <span class="rdate">후속</span>
       </div>
     </div>
@@ -513,7 +547,7 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
 <footer>
   <div class="legal">
     <strong>정보 제공 목적 · 진단서·처방전이 아니며 의료행위를 대신하지 않습니다.</strong><br>
-    이 페이지와 K-Doctor가 산출하는 내용은 의료인의 판단을 돕는 참고 자료이며, 면허 있는 의료인의 진단·처방·처치를 대체하지 않습니다. 서비스는 초안 단계이며 아직 이용자에게 제공되지 않습니다.
+    이 페이지와 K-Doctor가 산출하는 내용은 의료인의 판단을 돕는 참고 자료이며, 면허 있는 의료인의 진단·처방·처치를 대체하지 않습니다. 서비스는 초안 단계이며 실사용자 대상이 아닙니다.
   </div>
   <div class="flinks">
     <a href="https://github.com/Openhash-Gopang/hondi" target="_blank" rel="noopener">hondi 저장소</a>
@@ -538,6 +572,11 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
     document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
   })();
 </script>
+
+<!-- 진료 상담 창 — 코드는 hondi 저장소(assets/kdoctor-chat-widget.js, kdoctor-chat-core.js)에 두고
+     이 페이지는 컨테이너(#kdoctor-chat)만 둔다. hondi.net이 파일을 서빙해야 하고, worker.js
+     ALLOWED_ORIGINS에 doctor.hondi.net이 등록돼야 /ai/chat 호출이 동작한다. -->
+<script type="module" src="https://hondi.net/assets/kdoctor-chat-widget.js"></script>
 
 </body>
 </html>
