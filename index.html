@@ -1,7 +1,543 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>K-Doctor — 준비 중</title></head>
-<body style="font-family:sans-serif;max-width:40em;margin:4em auto;padding:0 1em">
-<h1>K-Doctor</h1>
-<p>진료과목별 AI가 증상을 듣고 진단 참고와 처방/처치 제안을 돕는 의료인 중심 임상 의사결정 지원 서비스입니다. 현재 준비 중입니다.</p>
-<p>이 서비스는 진단서·처방전을 발급하지 않으며 의료행위를 대신하지 않습니다. 응급 상황에서는 119에 연락하세요.</p>
-</body></html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Doctor 소개 — 진료과목별 AI 진단 참고·처치 제안</title>
+<meta name="description" content="K-Doctor는 의료인을 위한 임상 의사결정 지원 도구입니다. 진료과목별 전문 AI의 소견을 총괄 AI가 모아 진단 참고와 처방/처치 제안을 내고, 확신도·응급 전환·용량 검증은 결정론적 코드가 다시 계산합니다.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   Hondi/Gopang 공용 디자인 시스템(site-header.css, pages/klaw.html)을
+   그대로 따른 K-Doctor 소개 페이지(K-Estate와 같은 양식). 다른 사이트(doctor 저장소)에서
+   단독 호스팅되므로 /assets/site-header.css를 참조하지 않고 같은 값을
+   이 파일 안에 그대로 옮겨 담았다.
+   ══════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── TOKENS (Supabase-inspired light, klaw.html과 동일) ── */
+:root {
+  --bg:        #f8f9fa;
+  --bg-alt:    #ffffff;
+  --bg-subtle: #f1f3f5;
+  --surface:   #ffffff;
+  --surface2:  #f8f9fa;
+
+  --border:    #e5e7eb;
+  --border2:   #d1d5db;
+
+  --brand:     #3ecf8e;
+  --brand-dk:  #1a9e6a;
+  --brand-lt:  #d1fae5;
+  --brand-bg:  #f0fdf8;
+
+  --blue:      #3b82f6;
+  --blue-lt:   #eff6ff;
+  --amber:     #f59e0b;
+  --amber-lt:  #fffbeb;
+  --red:       #ef4444;
+  --red-lt:    #fef2f2;
+
+  --text:      #0f172a;
+  --text2:     #1e293b;
+  --text3:     #374151;
+  --text4:     #6b7280;
+
+  --radius:    6px;
+  --radius-lg: 10px;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow:    0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+}
+
+/* ── 상단 안내 띠 + 내비게이션 (K-Law 페이지처럼 밝은 흰색 배경으로 변경, 2026-09-28) ── */
+.site-strip {
+  background: var(--bg-subtle); padding: 6px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+}
+.site-strip-text { color: var(--text3); font-size: 12px; font-family: 'Pretendard', sans-serif; text-decoration: none; }
+.site-strip-text:hover { color: var(--text); }
+.site-strip-support-btn {
+  display: inline-flex; align-items: center; flex-shrink: 0;
+  background: var(--brand-bg); color: var(--brand-dk); font-size: 11.5px; font-weight: 600;
+  padding: 3px 12px; border-radius: 20px; text-decoration: none;
+  border: 1px solid #a7f3d0; white-space: nowrap;
+  font-family: 'Pretendard', sans-serif;
+}
+.site-nav {
+  background: #ffffff; padding: 0 20px; display: flex; align-items: center;
+  height: 54px; gap: 16px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 1100;
+}
+.site-nav-logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; text-decoration: none; }
+.site-nav-logo .mark { width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--brand), var(--brand-dk)); }
+.site-nav-logo span { color: var(--text); font-size: 16px; font-weight: 600; font-family: 'Pretendard', sans-serif; }
+.site-nav-links { display: flex; align-items: center; gap: 2px; flex: 1; overflow-x: auto; scrollbar-width: none; }
+.site-nav-links::-webkit-scrollbar { display: none; }
+.site-nav-links a {
+  color: var(--text3); font-size: 13.5px; padding: 17px 10px; text-decoration: none;
+  white-space: nowrap; border-bottom: 2px solid transparent; display: flex;
+  align-items: center; gap: 5px; font-family: 'Pretendard', sans-serif;
+  transition: color 0.15s;
+}
+.site-nav-links a:hover { color: var(--text); }
+.site-nav-highlight { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.site-nav-highlight a {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--brand-bg);
+  border: 1px solid #a7f3d0; color: var(--brand-dk); font-size: 12.5px; font-weight: 600;
+  padding: 6px 13px; border-radius: 20px; white-space: nowrap;
+  text-decoration: none; font-family: 'Pretendard', sans-serif;
+  transition: background 0.15s, transform 0.1s;
+}
+.site-nav-highlight a:hover { background: var(--brand-lt); transform: translateY(-1px); }
+.site-nav-highlight a .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--brand); flex-shrink: 0; }
+@media (max-width: 900px) { .site-nav-highlight a span.label-text { display: none; } .site-nav-highlight a { padding: 6px 9px; } }
+
+/* ── 히어로 (밝은 흰색 배경, K-Law 페이지 톤) ── */
+.site-hero { background: #ffffff; padding: 75px 40px 62px; position: relative; border-bottom: 1px solid var(--border); }
+.site-hero-badge {
+  display: inline-flex; align-items: center; gap: 6px; background: var(--brand-bg);
+  color: var(--brand-dk); font-size: 12px; font-weight: 500; padding: 5px 12px;
+  border: 1px solid #a7f3d0; border-radius: 20px; margin-bottom: 20px; font-family: 'Pretendard', sans-serif;
+}
+.site-hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); }
+.site-hero h1 { font-size: 32px; font-weight: 500; line-height: 1.5; margin: 0 0 16px; max-width: 640px; font-family: 'Pretendard', sans-serif; }
+.site-hero h1 .l1 { color: var(--text); }
+.site-hero h1 .l2 { color: var(--brand-dk); }
+.site-hero-sub { color: var(--text3); font-size: 15px; line-height: 1.7; margin: 0 0 24px; max-width: 580px; font-family: 'Pretendard', sans-serif; }
+.site-hero-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+.site-hero-actions a {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--text);
+  border: 1px solid var(--text); color: #fff; font-size: 13.5px; font-weight: 600;
+  padding: 10px 20px; border-radius: 20px; white-space: nowrap;
+  text-decoration: none; font-family: 'Pretendard', sans-serif;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+}
+.site-hero-actions a:hover { background: #1e293b; box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.site-hero-actions a:nth-child(2) { background: #fff; color: var(--text); border: 1px solid var(--border2); }
+.site-hero-actions a:nth-child(2):hover { background: var(--bg-subtle); }
+.site-hero-actions a .dot { background: var(--brand); }
+.site-hero-domains { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+.site-hero-domains a {
+  font-size: 13px; font-weight: 500; color: var(--text3); text-decoration: none;
+  background: var(--bg-subtle); border: 1px solid var(--border); padding: 7px 14px; border-radius: 20px;
+  font-family: 'Pretendard', sans-serif; transition: background 0.15s, color 0.15s;
+}
+.site-hero-domains a:hover { background: var(--brand-bg); color: var(--brand-dk); border-color: #a7f3d0; }
+
+/* ── 섹션 (klaw.html의 .section / .section-tag / .section-title / .section-body 그대로) ── */
+.section { padding: 88px 8%; }
+.section-inner { max-width: 860px; margin: 0 auto; }
+.section-alt { background: #ffffff; }
+.section-tag {
+  display: inline-block;
+  font-family: 'Pretendard', sans-serif; font-size: 11px; font-weight: 400;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--brand-dk); background: var(--brand-bg);
+  border: 1px solid #a7f3d0;
+  padding: 3px 10px; border-radius: 99px;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: clamp(22px, 3vw, 30px); font-weight: 300;
+  letter-spacing: -0.6px; color: var(--text);
+  margin-bottom: 10px; line-height: 1.2;
+}
+.section-title strong { font-weight: 600; }
+.section-body { font-size: 13px; font-weight: 400; color: var(--text2); line-height: 1.75; max-width: 100%; }
+.section-body p { margin-bottom: 10px; }
+.section-body p:last-child { margin-bottom: 0; }
+.overview-list { list-style: none; margin: 10px 0 12px 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.overview-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; font-weight: 400; color: var(--text2); line-height: 1.75; }
+.overview-list li::before { content: '◆'; color: var(--text); font-size: 0.5em; font-weight: 500; flex-shrink: 0; margin-top: 6px; padding-left: 0.6em; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ── 3단계 카드(고유 콘텐츠, 같은 색 토큰으로 구성) ── */
+.stage-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-top: 32px; }
+.stage { background: var(--surface); padding: 26px 22px; }
+.stage .step-tag { font-family: 'Pretendard', sans-serif; font-size: 11px; color: var(--brand-dk); letter-spacing: 1px; margin-bottom: 10px; }
+.stage h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.stage p.desc { font-size: 12.5px; color: var(--text3); margin-bottom: 12px; }
+.stage .pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; margin-top: 8px; }
+.pill.center { background: var(--blue-lt); color: var(--blue); }
+.pill.sigma { background: var(--brand-bg); color: var(--brand-dk); border: 1px solid #a7f3d0; }
+.pill.reject { background: var(--red-lt); color: var(--red); }
+
+.metric-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-top: 40px; }
+.metric-cell { background: var(--surface); padding: 28px 20px; text-align: center; }
+.metric-cell .label { font-family: 'Pretendard', sans-serif; font-size: 11px; color: var(--brand-dk); letter-spacing: 1px; }
+.metric-cell .num { font-size: 26px; font-weight: 300; color: var(--text); margin: 8px 0; }
+.metric-cell .num strong { color: var(--brand); font-weight: 700; }
+.metric-cell .sub { font-size: 13px; color: var(--text3); }
+
+.callout { margin-top: 28px; padding: 20px 26px; background: var(--bg-subtle); border-left: 4px solid var(--brand); border-radius: var(--radius); font-size: 13px; color: var(--text2); line-height: 1.8; }
+
+.example-box { border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); padding: 8px 26px; margin-top: 28px; }
+.example-row { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.example-row:last-child { border-bottom: none; }
+.example-row .k { color: var(--text3); }
+.example-row .v { color: var(--text); font-weight: 600; text-align: right; }
+.example-final { display: flex; justify-content: space-between; align-items: center; background: var(--brand-bg); border: 1px solid #a7f3d0; border-radius: var(--radius); padding: 14px 18px; margin: 16px 0; }
+.example-final .v { color: var(--brand-dk); font-size: 18px; font-weight: 700; }
+
+.roadmap-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; margin-top: 32px; }
+.rstep { border-left: 2px solid var(--border); padding-left: 16px; position: relative; }
+.rstep::before { content: ''; position: absolute; left: -6px; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--border2); }
+.rstep.done::before { background: var(--brand); }
+.rstep.blocked::before { background: var(--border2); }
+.rstep.missing::before { background: var(--red); }
+.rstep.partial::before { background: var(--amber); }
+.rstep.held::before { background: var(--blue); }
+.rstep.partial .rlabel { color: #b45309; }
+.rstep.held .rlabel { color: var(--blue); }
+.rstep .rlabel { font-size: 11px; color: var(--brand-dk); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.rstep.blocked .rlabel { color: var(--text4); }
+.rstep.missing .rlabel { color: var(--red); }
+.rstep h4 { margin: 6px 0 6px; font-size: 14px; color: var(--text); }
+.rstep p { color: var(--text3); font-size: 12.5px; }
+.rstep .rdate { display: block; font-size: 11px; color: var(--text4); margin-top: 4px; }
+.plan-list { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.plan-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--text2); line-height: 1.7; }
+.plan-list li .n { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--brand-bg); border: 1px solid #a7f3d0; color: var(--brand-dk); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+
+.msub { font-size: 16px; font-weight: 600; color: var(--text); margin: 36px 0 6px; }
+.msub-note { font-size: 12.5px; color: var(--text3); margin-bottom: 12px; }
+.mwrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); }
+.mtable { width: 100%; border-collapse: collapse; font-size: 12.5px; line-height: 1.65; min-width: 640px; }
+.mtable th { text-align: left; font-size: 11px; letter-spacing: .04em; color: var(--brand-dk); background: var(--brand-bg); padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.mtable td { padding: 11px 12px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+.mtable tr:last-child td { border-bottom: none; }
+.mtable td.axis { font-weight: 600; color: var(--text); white-space: nowrap; }
+.st { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
+.st-done { background: var(--brand-bg); color: var(--brand-dk); border: 1px solid #a7f3d0; }
+.st-part { background: var(--amber-lt); color: #b45309; border: 1px solid #fde68a; }
+.st-none { background: var(--bg-subtle); color: var(--text4); border: 1px solid var(--border2); }
+.st-hold { background: var(--blue-lt); color: var(--blue); border: 1px solid #bfdbfe; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 10px 0 0; font-size: 12px; color: var(--text3); align-items: center; }
+
+.register-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; align-items: start; margin-top: 24px; }
+
+code, .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; background: var(--bg-subtle); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--brand-dk); }
+
+footer { background: var(--bg-subtle); padding: 40px 8% 30px; color: var(--text3); font-size: 12.5px; border-top: 1px solid var(--border); }
+footer .legal { background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 20px; color: var(--text2); max-width: 860px; margin-left: auto; margin-right: auto; }
+footer .flinks { display: flex; gap: 18px; flex-wrap: wrap; max-width: 860px; margin: 0 auto; }
+footer .flinks a { color: var(--text3); text-decoration: none; }
+footer .flinks a:hover { color: var(--text); }
+footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); }
+
+@media (max-width: 900px) { .stage-grid, .metric-grid, .roadmap-grid, .register-grid { grid-template-columns: 1fr; } .stage-grid, .metric-grid { display: flex; flex-direction: column; } }
+@media (max-width: 640px) {
+  .site-nav { padding: 0 12px; }
+  .site-nav-links a span.label-text, .site-nav-links a { font-size: 12.5px; }
+  .site-hero { padding: 32px 20px 28px; }
+  .site-hero h1 { font-size: 24px; }
+  .section { padding: 56px 6%; }
+}
+</style>
+</head>
+<body>
+
+<div class="site-nav">
+  <a class="site-nav-logo" href="#top">
+    <span class="mark"></span>
+    <span>K-Doctor</span>
+  </a>
+  <nav class="site-nav-links">
+    <a href="#flow">진료 흐름</a>
+    <a href="#specialties">진료과목</a>
+    <a href="#methods">방법론 상세</a>
+    <a href="#principles">핵심 원칙</a>
+    <a href="#roadmap">검증·로드맵</a>
+  </nav>
+  <div class="site-nav-highlight">
+    <a href="#roadmap"><span class="dot"></span><span class="label-text">진행 현황(1–10)</span></a>
+    <a href="https://github.com/Openhash-Gopang/hondi" target="_blank" rel="noopener"><span class="dot"></span><span class="label-text">구현 코드(hondi)</span></a>
+  </div>
+</div>
+<div class="site-strip">
+  <a class="site-strip-text" href="#roadmap">응급이면 즉시 119 · 자살예방상담전화 109 · 초안 단계 · 아직 이용자에게 서빙되지 않음 · 진행 현황 보기 →</a>
+  <a class="site-strip-support-btn" href="https://estate.hondi.net" target="_blank" rel="noopener">K-Estate 보러 가기</a>
+</div>
+
+<section class="site-hero" id="top">
+  <span class="site-hero-badge"><span class="dot"></span>K-Doctor · Hondi/Gopang 생태계</span>
+  <h1><span class="l1">진료과목별 AI가 증상을 듣고</span><br><span class="l2">진단 참고와 처치 제안을 돕습니다</span></h1>
+  <p class="site-hero-sub">의료인을 위한 임상 의사결정 지원 도구입니다. 증상(문자·사진)을 접수하면 위험 신호부터 선별하고, 진료과목별 전문 AI의 소견을 총괄 AI가 모아 진단 참고와 처방/처치 제안을 냅니다. 종합 확신도와 응급 전환은 AI가 아니라 결정론적 코드가 다시 계산합니다.</p>
+  <div class="site-hero-actions">
+    <a href="#flow"><span class="dot"></span>진료 흐름 보기</a>
+    <a href="#specialties"><span class="dot"></span>진료과목</a>
+    <a href="https://github.com/Openhash-Gopang/hondi" target="_blank" rel="noopener"><span class="dot"></span>구현 코드 보기</a>
+  </div>
+  <div class="site-hero-domains">
+    <a href="https://github.com/Openhash-Gopang/hondi/blob/main/prompts/SP-29_kdoctor_v0_1.txt" target="_blank" rel="noopener">SP-29 총괄 (초안)</a>
+    <a href="https://github.com/Openhash-Gopang/hondi/blob/main/src/gopang/ai/hondi-doctor-verdict.js" target="_blank" rel="noopener">hondi-doctor-verdict.js</a>
+    <a href="https://github.com/Openhash-Gopang/hondi/blob/main/docs/kdoctor/design-notes.md" target="_blank" rel="noopener">설계 노트</a>
+  </div>
+</section>
+
+<section class="section section-alt" id="flow">
+  <div class="section-inner">
+    <div class="section-tag reveal">Care Flow — 한 케이스의 흐름</div>
+    <h2 class="section-title reveal">상담에서 경과 관찰 종료까지 <strong>한 케이스</strong>로</h2>
+    <div class="section-body reveal">
+      <p>K-Estate는 평가 SP 하나가 값을 냅니다. K-Doctor는 총괄 AI가 진료과목별 전문 AI를 필요할 때만 호출해 소견을 받고, 하나의 케이스로 이어 갑니다. 케이스 단계는 코드가 검증하며 건너뛰기·역행을 허용하지 않습니다.</p>
+    </div>
+    <div class="stage-grid reveal">
+      <div class="stage">
+        <div class="step-tag">STEP 1 — INTAKE·TRIAGE</div>
+        <h3>상담·위험 신호 선별</h3>
+        <p class="desc">환자·입력의 정합성을 확인하고 위험 신호(흉통, 뇌졸중 징후, 영아 발열 등)를 공방보다 먼저 점검합니다.</p>
+        <ul class="overview-list">
+          <li>위험 신호가 하나라도 있으면 감별을 멈추고 119 안내</li>
+          <li>확인할 수 없으면 질문 하나, 답이 없으면 응급으로 처리</li>
+          <li>자해·자살 의도는 109 안내가 우선</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <div class="step-tag">STEP 2 — DIFFERENTIAL</div>
+        <h3>진단 참고</h3>
+        <p class="desc">감별 가설을 빠짐없이 뽑고, 필요하면 과목 전문 AI에 좁은 질문 하나를 협진 의뢰합니다.</p>
+        <ul class="overview-list">
+          <li>놓치면 안 되는 진단은 배제 근거가 없으면 남김</li>
+          <li>가설 옹호자·반증자 공방, 최대 4왕복</li>
+          <li>결과는 "진단 참고"이며 확진이 아님</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <div class="step-tag">STEP 3 — PLAN</div>
+        <h3>처방/처치 제안</h3>
+        <p class="desc">자가관리·일반의약품·전문의약품 계열·시술·의뢰 다섯 종류로만 제안하고, 근거 유형을 붙입니다.</p>
+        <ul class="overview-list">
+          <li>용량은 출처·조회일이 있을 때만, 없으면 코드가 제거</li>
+          <li>소아는 체중 확인값이 없으면 용량 제거</li>
+          <li>전문의약품·시술은 항상 의사 판단 필요</li>
+        </ul>
+      </div>
+    </div>
+    <div class="stage-grid reveal">
+      <div class="stage">
+        <div class="step-tag">STEP 4 — FOLLOW-UP</div>
+        <h3>예후 관찰</h3>
+        <p class="desc">재평가 시점과 "이런 경우 바로 내원" 기준을 구체적 증상으로 정하고, 다음 접속 때 이전 계획과 비교합니다.</p>
+        <ul class="overview-list">
+          <li>호전·불변·악화·새 증상으로 분류</li>
+          <li>악화나 새 위험 신호는 선별 단계로 복귀</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <div class="step-tag">STEP 5 — REASSESS</div>
+        <h3>추가 진단·처치</h3>
+        <p class="desc">불변이면 이전 진단 참고를 방어하지 않고 감별을 다시 엽니다(앵커링 금지). 추가 검사와 과목 재배정을 제안합니다.</p>
+        <ul class="overview-list">
+          <li>이전 상위 가설을 공방에 다시 올림</li>
+          <li>새 정보만 근거로 인정</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <div class="step-tag">STEP 6 — CLOSE</div>
+        <h3>경과 관찰 종료</h3>
+        <p class="desc">증상 소실과 재발 징후 없음, 계획한 기간 경과를 충족하면 종료를 제안합니다. 완치 판정과 퇴원은 진료하는 의사·병원이 합니다.</p>
+        <ul class="overview-list">
+          <li>종료 유형: 증상 소실 추정 / 대면 진료 전환 / 중단</li>
+          <li>증상이 다시 생기면 같은 케이스에서 이어 감</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="specialties">
+  <div class="section-inner">
+    <div class="section-tag reveal">Specialties</div>
+    <h2 class="section-title reveal">진료과목별 <strong>전문 AI</strong></h2>
+    <div class="section-body reveal">
+      <p>과목 SP는 공통 골격(규칙 C1–C8) 위에 과목 고유의 위험 신호·필수 확인 항목·놓치면 안 되는 진단·처치 범위를 붙여 조립합니다. 과목 훅은 공통 규칙을 약화할 수 없고 추가만 할 수 있습니다. 과목 AI는 진단을 확정하지 않고, 총괄이 던진 좁은 질문 하나에 소견을 돌려줍니다.</p>
+    </div>
+    <div class="mwrap reveal"><table class="mtable">
+      <thead><tr><th>진료과목</th><th>호출 id</th><th>역할과 특이 규칙</th><th>상태</th></tr></thead>
+      <tbody>
+        <tr><td class="axis">응급의학과</td><td>kdoctor-emergency</td><td>시간 민감 can't-miss 선별, 119 안내, 응급 전 안전 조치. 처방·시술은 "응급실 평가 후"까지만</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">내과</td><td>kdoctor-internal</td><td>성인 전신·장기 증상. 분과(순환기·소화기 등)로 쪼개지 않은 일반 내과</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">소아청소년과</td><td>kdoctor-pediatrics</td><td>연령별 위험 선별, 보호자용 복귀 기준. 용량은 체중 확인값이 있고 출처가 있을 때만, 생후 3개월 미만은 항상 대면 진료</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">피부과</td><td>kdoctor-dermatology</td><td>증상 사진 관찰 소견(SP-29-IMG) 기반 형태학 감별. 사진만으로 병명을 확정하거나 피부암을 배제하지 않음</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">그 외 과목</td><td>—</td><td>전문 SP 없음. 총괄이 일반 범위로 판단하고 그 사실을 결과에 밝힘</td><td><span class="st st-none">미반영</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout reveal">
+      과목 훅의 위험 신호와 기준은 예시이며 완전하지 않고, 전문의 검토를 거치지 않았습니다. 검토 전에는 실사용자 경로를 열지 않습니다.
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="methods">
+  <div class="section-inner">
+    <div class="section-tag reveal">Methodology v0.1</div>
+    <h2 class="section-title reveal">방법론 <strong>상세</strong></h2>
+    <div class="section-body reveal">
+      <p>K-Law v17.0의 판결 도출 골격을 임상 추론으로 옮겼습니다. 옮기지 않은 것(판례·심급, 승패 프레임, "원심과 무관하게 배척하지 않는다" 류 공방 원리 — 임상에서는 확립된 위험 신호를 논쟁으로 뒤집을 수 없기 때문)도 설계 노트에 적어 두었습니다. 상태는 저장소 기준(2026-09-30)입니다.</p>
+      <div class="legend">
+        <span class="st st-done">구현</span> 코드로 검증됨
+        <span class="st st-part">초안</span> 프롬프트만 있음(실행 미검증)
+        <span class="st st-none">미반영</span> 아직 없음
+      </div>
+    </div>
+    <div class="mwrap reveal"><table class="mtable">
+      <thead><tr><th>K-Law 개념</th><th>K-Doctor 대응</th><th>위치</th><th>상태</th></tr></thead>
+      <tbody>
+        <tr><td class="axis">명제 쌍 완전 추출, 3층위</td><td>감별 가설 완전 추출: ① 시간 민감·중증 ② 범주 ③ 병명·ICD-10. 숨은 명제는 놓치면 안 되는 진단(can't-miss)</td><td>SP-29 STEP A-1</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">판단 대상 동일성, 결정 회피 방지</td><td>환자·입력·증상 정합성 확인, 4대 정보(주소증·환자 특정·발병 경과·동반 상황) 확인 후에만 판단 유보</td><td>SP-29 STEP 0</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">원고·피고 공방, 4왕복 상한, 중단 원리</td><td>가설 옹호자 대 반증자 공방. 중단은 <strong>환자 안전 우선 원리</strong>(위해 비대칭·근거 이탈·시간 민감도)로 판정</td><td>SP-29 STEP A-3</td><td><span class="st st-part">초안</span></td></tr>
+        <tr><td class="axis">확신도 이원화, 결론 분기</td><td>임상·정보 확신도의 min. 4 미만 유보, 4–6 조건부, 7–10 확정적 참고. 분기는 코드가 계산</td><td>SP-29 STEP B + 검증기</td><td><span class="st st-done">구현</span></td></tr>
+        <tr><td class="axis">—(임상 고유)</td><td>위험 신호 게이트웨이: 하나라도 확인되면 감별을 멈추고 즉시 안내. 확신도와 무관하게 응급 전환을 코드가 강제</td><td>SP-29 STEP T + 검증기</td><td><span class="st st-done">구현</span></td></tr>
+        <tr><td class="axis">—(임상 고유)</td><td>경과 관찰과 종료: 재평가 → 호전·불변·악화 분류 → "경과 관찰 종료". 퇴원·완치 판정은 하지 않음</td><td>SP-29 STEP F + 검증기</td><td><span class="st st-part">부분</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout reveal">
+      "구현"은 코드 유닛 테스트(46건)로 검증됐다는 뜻입니다. 프롬프트의 규칙을 LLM이 실제 대화에서 지키는지는 아직 측정하지 않았습니다. 코드는 SP가 낸 확신도·결론 유형을 참고로만 기록하고 재계산한 값을 채택합니다.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="principles">
+  <div class="section-inner">
+    <div class="section-tag reveal">Design Principles</div>
+    <h2 class="section-title reveal">환자에게 <strong>안전한 쪽으로</strong></h2>
+    <div class="section-body reveal">
+      <p>진단을 잘 맞히는 것보다, 놓치면 안 되는 것을 놓치지 않고 지어내지 않는 것을 먼저 둡니다.</p>
+      <ul class="overview-list">
+        <li><strong>안전 우선(과대 분류)</strong> — 위험 신호가 있거나 애매하면 더 높은 긴급도로 분류합니다. 놓친 중증의 비용이 불필요한 내원보다 훨씬 큽니다.</li>
+        <li><strong>지어내지 않는다</strong> — 말하지 않은 증상·검사값을 만들지 않습니다. 근거는 문진·이미지 관찰·제공된 측정값·확인된 가이드라인·협진 소견 다섯 종류뿐이고, 근거 유형이 없는 항목은 코드가 버립니다.</li>
+        <li><strong>AI는 계산하지 않는다</strong> — 종합 확신도, 결론 유형, 응급 전환, 용량 유효성은 코드가 다시 계산합니다. 출처·조회일 없는 용량은 제거됩니다.</li>
+        <li><strong>사진은 진단이 아니다</strong> — 이미지는 관찰 소견으로만 받고 병명 추정·심각도 평가를 하지 않습니다. 미성년자의 은밀한 부위 사진은 분석하지 않고 대면 진료를 안내합니다.</li>
+        <li><strong>발급하지 않는다</strong> — 진단서·처방전·소견서를 만들지 않고 "확진"이라 쓰지 않습니다. 산출물 이름은 "진단 참고"와 "처방/처치 제안"입니다.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="roadmap">
+  <div class="section-inner">
+    <div class="section-tag reveal">Current Status</div>
+    <h2 class="section-title reveal">진행 현황 <strong>1–10</strong></h2>
+    <div class="section-body reveal"><p>이 페이지는 소개용이며 실제 상담 서비스는 아직 운영 중이 아닙니다. 아래 10개 항목은 2026-09-30 기준으로 정리한 상태이며 낙관적으로 반올림하지 않았습니다.</p></div>
+
+    <div class="roadmap-grid reveal">
+      <div class="rstep done">
+        <div class="rlabel">1 · 완료</div>
+        <h4>총괄 SP-29 초안</h4>
+        <p>K-Law v17.0의 골격을 임상 추론으로 옮긴 총괄 SP. 위험 신호 게이트웨이를 공방보다 먼저 둡니다. 등록·배선 전이며 이용자에게 서빙되지 않습니다.</p>
+        <span class="rdate">hondi PR #496</span>
+      </div>
+      <div class="rstep done">
+        <div class="rlabel">2 · 완료</div>
+        <h4>과목 SP 4종 + 공통 골격</h4>
+        <p>응급의학과·내과·소아청소년과·피부과 훅과 공통 규칙 C1–C8. 조립 도구가 공통 규칙을 약화하는 훅을 lint로 막습니다.</p>
+        <span class="rdate">hondi PR #496</span>
+      </div>
+      <div class="rstep done">
+        <div class="rlabel">3 · 완료</div>
+        <h4>결정론 검증기 + 테스트</h4>
+        <p><code>hondi-doctor-verdict.js</code> — 확신도 min 재계산, 위험 신호 강제, 근거·용량 검증, 케이스 단계 전이. 유닛 테스트 46건 통과(SP가 실제 대화에서 규칙을 지키는지는 검증하지 않음).</p>
+        <span class="rdate">hondi PR #496</span>
+      </div>
+      <div class="rstep done">
+        <div class="rlabel">4 · 완료</div>
+        <h4>doctor.hondi.net 소개 페이지</h4>
+        <p>이 페이지입니다. 상담 채팅은 아직 연결되지 않았습니다.</p>
+        <span class="rdate">doctor 저장소</span>
+      </div>
+      <div class="rstep blocked">
+        <div class="rlabel">5 · 대기</div>
+        <h4>LLM 실행 검증</h4>
+        <p>흉통·소아 발열·피부 발진 등 시나리오로 SP 준수 여부를 재는 도구가 아직 없습니다. 이 검증 전에는 실사용자 경로를 열지 않습니다.</p>
+        <span class="rdate">미착수</span>
+      </div>
+      <div class="rstep blocked">
+        <div class="rlabel">6 · 대기</div>
+        <h4>전문의 검토</h4>
+        <p>위험 신호 목록·감점 값·과목 훅은 초안입니다. 과목별 전문의 검토가 필수입니다.</p>
+        <span class="rdate">미착수</span>
+      </div>
+      <div class="rstep missing">
+        <div class="rlabel">7 · 미구현</div>
+        <h4>의료인 면허 검증</h4>
+        <p>현재는 모든 사용자를 의료인으로 가정해 전문가 뷰(용량 포함)를 냅니다. 최종 단계에서 검증을 붙이고 <code>VERIFICATION_ENFORCED</code>를 켭니다. 그 전에는 환자에게 전문가 뷰가 노출될 수 있어 일반 공개하지 않습니다.</p>
+        <span class="rdate">설계 전</span>
+      </div>
+      <div class="rstep missing">
+        <div class="rlabel">8 · 미구현</div>
+        <h4>케이스 상태 저장·환자 공유 경로</h4>
+        <p>경과 관찰용 케이스 상태를 저장하는 곳(로컬 PDV 등)과 의료인 → 환자 결과 전달 경로가 없습니다.</p>
+        <span class="rdate">설계 전</span>
+      </div>
+      <div class="rstep partial">
+        <div class="rlabel">9 · 부분</div>
+        <h4>SP 등록·배선·이미지 호출</h4>
+        <p>SP-29 계열은 gwp-registry·sp-catalog·call-ai에 등록되지 않았고, 증상 사진 관찰 프롬프트(SP-29-IMG)를 호출하는 코드가 없습니다. 프롬프트·검증기만 저장소에 있습니다.</p>
+        <span class="rdate">초안만</span>
+      </div>
+      <div class="rstep held">
+        <div class="rlabel">10 · 보류</div>
+        <h4>나머지 진료과목</h4>
+        <p>정형외과·산부인과·정신건강의학과·안과·이비인후과·신경과·비뇨의학과 등은 전문 SP가 없어 총괄이 일반 범위로 판단하고 "전문 SP 부재"를 밝힙니다. 내과 분과 세분화도 사용량과 전문의 의견에 따라 결정합니다.</p>
+        <span class="rdate">후속</span>
+      </div>
+    </div>
+
+    <div class="callout reveal">
+      ⚕️ K-Doctor는 임상 의사결정 지원 도구이며 의료행위를 하지 않습니다. 실제 진단·처방·처치의 책임은 진료하는 의사에게 있습니다. 응급 상황에서는 119, 자살 위기에서는 자살예방상담전화 109에 연락하십시오.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="legal">
+    <strong>정보 제공 목적 · 진단서·처방전이 아니며 의료행위를 대신하지 않습니다.</strong><br>
+    이 페이지와 K-Doctor가 산출하는 내용은 의료인의 판단을 돕는 참고 자료이며, 면허 있는 의료인의 진단·처방·처치를 대체하지 않습니다. 서비스는 초안 단계이며 아직 이용자에게 제공되지 않습니다.
+  </div>
+  <div class="flinks">
+    <a href="https://github.com/Openhash-Gopang/hondi" target="_blank" rel="noopener">hondi 저장소</a>
+    <a href="https://github.com/orgs/Openhash-Gopang/repositories" target="_blank" rel="noopener">조직 전체 저장소</a>
+    <a href="https://estate.hondi.net" target="_blank" rel="noopener">K-Estate</a>
+    <a href="https://klaw.hondi.net" target="_blank" rel="noopener">K-Law</a>
+  </div>
+  <p class="copyright">© 2026 AI City Inc. (에이아이시티주식회사) · Hondi/Gopang 생태계</p>
+</footer>
+
+<script>
+  // klaw.html의 .reveal/.reveal.in 트리거는 desktop.html(SPA 셸)이 제공하지만,
+  // 이 페이지는 단독 사이트이므로 같은 효과를 내는 최소 스크립트를 직접 둔다.
+  (function () {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
