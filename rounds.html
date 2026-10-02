@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Doctor 라운드별 시험 기록</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --bg:#f8f9fa; --sur:#ffffff; --bdr:#e5e7eb; --bdr2:#d1d5db;
+  --txt:#0f172a; --txt2:#1e293b; --txt3:#374151; --txt4:#6b7280;
+  --pri:#3ecf8e; --pri-dk:#1a9e6a; --pri-bg:#f0fdf8;
+  --amb-bg:#fffbeb; --amb-bd:#fde68a; --amb-tx:#78350f;
+  --red:#dc2626; --red-bg:#fef2f2; --blue-bg:#eef2ff; --blue-bd:#c7d2fe; --blue-tx:#3730a3;
+  --font:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif; --r:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--txt3);font-size:13.5px;line-height:1.7}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 90px}
+a{color:var(--pri-dk)}
+.back-link{display:inline-block;font-size:13px;color:var(--txt4);text-decoration:none;margin-bottom:18px}
+.back-link:hover{color:var(--txt)}
+h1{font-size:22px;color:var(--txt);margin-bottom:6px}
+.lead{font-size:13.5px;color:var(--txt4);max-width:720px;margin-bottom:16px}
+.notice{background:var(--amb-bg);border:1px solid var(--amb-bd);border-radius:var(--r);padding:10px 14px;font-size:12.5px;color:var(--amb-tx);margin-bottom:18px}
+.urgent{font-size:12.5px;color:var(--txt4);margin-bottom:18px}
+.toolrow{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.tbtn{font-family:var(--font);font-size:13px;font-weight:600;padding:8px 14px;border:1px solid var(--bdr2);border-radius:var(--r);background:var(--sur);color:var(--txt3);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.tbtn:hover{background:var(--bg);color:var(--txt)}
+.tbtn[aria-expanded="true"] .caret{transform:rotate(180deg)}
+.caret{font-size:18px;line-height:1;color:var(--txt4);transition:transform .15s}
+.box{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:16px 18px;margin-bottom:18px}
+.box[hidden]{display:none}
+.box h2{font-size:15px;color:var(--txt);margin-bottom:6px}
+.box h3{font-size:13px;color:var(--txt);margin:14px 0 4px}
+.box p,.box li{font-size:12.6px;color:var(--txt3);line-height:1.65}
+.box ul,.box ol{margin:4px 0 0 18px}
+.box li{margin-bottom:3px}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.8px;background:var(--bg);border:1px solid var(--bdr);border-radius:4px;padding:0 4px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--sur)}
+th{background:var(--bg);color:var(--txt4);font-weight:600;text-align:left;padding:8px 10px;border-bottom:1px solid var(--bdr);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--bdr);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.tw{border:1px solid var(--bdr);border-radius:var(--r);overflow:auto;margin-bottom:14px}
+.tw table{min-width:560px}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sumtab td.name{white-space:nowrap}
+.sumtab td.name b{color:var(--txt)}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:4px;margin-bottom:16px}
+.tab{padding:8px 14px;border:none;background:none;border-radius:6px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--txt4);cursor:pointer}
+.tab.active{background:var(--pri-bg);color:var(--pri-dk)}
+.tab:not(.active):hover{background:var(--bg);color:var(--txt)}
+.tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:5px;vertical-align:middle;background:var(--pri)}
+.tab .dot.pend{background:var(--bdr2)}
+.panel{display:none}.panel.active{display:block}
+.rhead{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:16px 18px;margin-bottom:14px}
+.rhead h2{font-size:16px;color:var(--txt);margin-bottom:2px}
+.rhead .meta{font-size:12px;color:var(--txt4);margin-bottom:8px}
+.stats{display:flex;flex-wrap:wrap;gap:22px;margin:10px 0}
+.stat b{display:block;font-size:18px;color:var(--txt);font-variant-numeric:tabular-nums}
+.stat span{font-size:11px;color:var(--txt4)}
+.kv{margin-top:8px}
+.kv dt{font-size:11px;font-weight:700;color:var(--txt4);margin-top:8px}
+.kv dd{font-size:13px;color:var(--txt2)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.links a,.links span{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid var(--bdr2);color:var(--txt3);text-decoration:none;background:var(--sur)}
+.links a:hover{background:var(--bg)}
+.links span{color:var(--txt4);background:var(--bg)}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:99px;white-space:nowrap}
+.p-ok{background:var(--pri-bg);color:var(--pri-dk)}
+.p-ng{background:var(--red-bg);color:var(--red)}
+.p-na{background:var(--bg);color:var(--txt4)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px;align-items:center;font-size:12.5px}
+.filters label{display:inline-flex;gap:5px;align-items:center;cursor:pointer;color:var(--txt3)}
+.filters select{font-family:var(--font);font-size:12.5px;padding:4px 8px;border:1px solid var(--bdr2);border-radius:6px;background:var(--sur);color:var(--txt3)}
+td.utt{min-width:260px;max-width:420px}
+td.utt .t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+td.utt .t.open{display:block}
+.chg{background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:var(--r);padding:12px 14px;font-size:12.6px;color:var(--blue-tx);margin-bottom:14px}
+.chg b{color:#312e81}
+.chg ul{margin:4px 0 0 18px}
+.empty{color:var(--txt4);text-align:center;padding:24px 10px;background:var(--sur);border:1px dashed var(--bdr2);border-radius:var(--r)}
+.chart{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;margin-bottom:18px}
+.chart h2{font-size:14px;color:var(--txt);margin-bottom:2px}
+.chart .sub{font-size:12px;color:var(--txt4);margin-bottom:8px}
+.chart svg{width:100%;height:auto;display:block}
+.chart text{font-family:var(--font);fill:var(--txt3)}
+.bar{fill:var(--pri)} .bar.small{fill:#9ad9bd}
+@media(max-width:720px){.wrap{padding:20px 16px 70px}.stats{gap:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="index.html">← K-Doctor 소개로 돌아가기</a>
+  <h1>K-Doctor 라운드별 시험 기록</h1>
+  <p class="lead">총괄 의사 AI(SP-29)가 진료과목별 AI를 실제로 호출하는지, 보고서가 검증을 통과하는지를 DeepSeek 라이브로 시험한 기록입니다. 의사 50건(총괄이 특정 증상을 발견하고 과목 의사 AI에게 자문을 구하는 형식)과 환자 50건(환자가 스스로 증상을 말함)으로 이루어진 시나리오 100건을 쓰고, 라운드마다 무엇을 바꿨고 무엇이 달라졌는지 적습니다.</p>
+  <div class="notice"><b>면책 문구</b> — 이 기록은 자체 실험 결과이며 전문의 검토와 제3자 검증을 거치지 않았습니다. 통과는 "과목 호출과 보고서 검증이 기대대로 동작했다"는 뜻이지 진단이 맞았다는 뜻이 아닙니다. 아직 진행하지 않은 라운드는 계획만 있고 결과가 없습니다.</div>
+  <div class="urgent">응급이면 즉시 119, 자해·자살 생각이 있으면 자살예방상담전화 109(24시간)에 연락하세요. 이 서비스는 초안 단계이며 실사용자 대상이 아닙니다.</div>
+
+  <div class="toolrow">
+    <button class="tbtn" id="envBtn" type="button" aria-expanded="false" aria-controls="envBox">실험 환경<span class="caret">▾</span></button>
+    <button class="tbtn" id="scoreBtn" type="button" aria-expanded="false" aria-controls="scoreBox">채점 기준<span class="caret">▾</span></button>
+    <button class="tbtn" id="limitBtn" type="button" aria-expanded="false" aria-controls="limitBox">한계와 읽는 법<span class="caret">▾</span></button>
+  </div>
+
+  <div class="box" id="envBox" hidden>
+    <h2>실험 환경</h2>
+    <p>역할을 분리해 한 모델이 자기 결과를 스스로 채점하지 않도록 합니다. 검수 AI는 라운드 6부터 들어갑니다.</p>
+    <div class="tw" style="margin-top:10px"><table>
+      <thead><tr><th>역할</th><th>라운드 1~5</th><th>라운드 6 이후 (예정)</th></tr></thead>
+      <tbody>
+        <tr><td>총괄 의사 AI</td><td>SP-29 + <code>deepseek-flash</code>(thinking 끔). 위젯과 같은 코드(<code>runTurn</code>)로 협진 루프를 돌림</td><td>같음</td></tr>
+        <tr><td>전문 과목 의사 AI</td><td>과목 SP 41개(전문과목 26 + 내과 9·소아 6 세부 분과) + 공통 골격. 총괄이 고른 과목만, 턴당 최대 3회</td><td>같음</td></tr>
+        <tr><td>진단·처치/처방 AI</td><td>총괄 SP의 STEP A·STEP B 단계(별도 AI 아님)</td><td>테스트는 같은 AI, 상용은 별도 AI로 분리 예정</td></tr>
+        <tr><td>검수 AI</td><td>없음</td><td>SP-29K(C-1~C-6). 별도 호출·별도 키(<code>DEEPSEEK_CHECK_KEY</code>), 테스트는 같은 모델, 상용은 다른 모델</td></tr>
+        <tr><td>채점</td><td>코드가 자동 채점(사람의 의학적 판정 없음)</td><td>같음 + 검수 판정·재조정 통계</td></tr>
+      </tbody></table></div>
+    <h3>흐름</h3>
+    <p>시나리오 발화 → 총괄(위험 신호 선별 STEP T) → 과목 협진 → <code>[DIAGNOSIS_REPORT]</code> → 코드 검증기(확신도·응급 재계산, 금지 표현) → 무효면 1회 재생성 → (라운드 6~) 독립 검수 → 재조정 → 최종 보고서.</p>
+    <p style="margin-top:6px">결과 파일의 <code>orch_max_tokens</code> 문구는 러너의 고정 표기라 실제 한도와 다를 수 있습니다. 실제 한도는 코드의 <code>ORCHESTRATOR_MAX_TOKENS</code>를 따릅니다(라운드 3부터 8000, 워커 상한 8192).</p>
+  </div>
+
+  <div class="box" id="scoreBox" hidden>
+    <h2>채점 기준</h2>
+    <h3>협진 기대 증례(88건: 의사 44 + 환자 44)</h3>
+    <ul>
+      <li><b>PASS</b>: 호출한 과목이 기대 과목(<code>expect</code>) 또는 허용 과목(<code>accept</code>)과 겹치고, 검증을 통과한 보고서가 있음. 허용 과목으로만 통과하면 사람이 검토합니다.</li>
+      <li><b>FAIL</b> 사유: <code>no_consult</code>(호출 없음) · <code>wrong_specialty</code>(과목 불일치) · <code>no_report_*</code>(유효한 보고서 없음 — <code>truncated</code> 출력 한도로 잘림, <code>no_tag</code> 보고서 태그 없음, <code>unclosed</code> 닫는 태그 없음, <code>invalid</code> 검증 실패).</li>
+    </ul>
+    <h3>응급 기대 증례(12건: 의사 6 + 환자 6)</h3>
+    <ul>
+      <li>라운드 1~5: 119/109 안내가 있고 협진 호출이 없으면 PASS. 호출이 있으면 <code>consult_in_emergency</code>.</li>
+      <li>라운드 6~: 119/109 안내는 필수. 환자 발화는 호출이 있으면 FAIL, <b>의사가 자문을 명시 요청한 응급은 요청 과목을 호출해야 PASS</b>(호출이 없으면 <code>explicit_consult_not_called</code>). 2026-10-02 결정에 따른 변경이므로 라운드 6의 응급 통과율은 앞 라운드와 직접 비교하지 않습니다.</li>
+    </ul>
+    <h3>검수 AI(라운드 6~)</h3>
+    <ul>
+      <li>판정: 재검토 불요 / 재검토 권고 / 결론 무효 소지. 지적마다 모듈(C-1~C-6)·심각도·결론 영향을 기록합니다.</li>
+      <li>재조정이 채택되려면 같은 코드 검증기를 통과해야 하며, 응급 보고서는 재조정으로 낮출 수 없습니다.</li>
+    </ul>
+    <h3>평가 원칙</h3>
+    <ul>
+      <li>사례 특화 규칙을 만들지 않습니다. 변경마다 근거·일반성·부작용·검증 지표를 기록합니다.</li>
+      <li>라운드 1~5의 사례로 고친 것은 일반화의 증거가 아닙니다. 일반화는 새 시나리오로만 확인합니다.</li>
+      <li>평가 기준과 중단 기준은 실행 전에 적어 둡니다(아래 예정 라운드 참조).</li>
+    </ul>
+  </div>
+
+  <div class="box" id="limitBox" hidden>
+    <h2>한계와 읽는 법</h2>
+    <ul>
+      <li>라운드 1~3은 시나리오 앞 10건만 돌렸고 라운드 4~5는 100건 전체입니다. 건수가 다르므로 통과율을 나란히 비교할 때 분모를 함께 보세요.</li>
+      <li>같은 시나리오로 반복해 고쳤기 때문에 라운드가 갈수록 이 시나리오에 맞춰질 위험이 있습니다. 라운드 4→5의 개선은 이 위험을 포함합니다.</li>
+      <li>시나리오는 사람이 쓴 100건이며 실제 환자 분포가 아닙니다. 과목 기대값은 사람이 정한 것이고 전문의 검토를 거치지 않았습니다.</li>
+      <li>모델 출력은 매번 달라집니다. 한 번의 실행은 신뢰구간 없이 한 점입니다. 반복 실행(<code>--repeat</code>)은 아직 하지 않았습니다.</li>
+      <li>검수 AI는 현재 총괄과 같은 모델(다른 키)이라 맹점을 공유할 수 있습니다. 상용에서는 다른 모델로 바꿉니다.</li>
+    </ul>
+  </div>
+
+  <div class="chart" id="chart"><h2>라운드별 통과율</h2><div class="sub">막대 위 숫자는 통과/전체. 연한 막대는 10건만 돌린 라운드입니다.</div><div id="chartBody"></div></div>
+
+  <div class="tw"><table class="sumtab" id="sumTable"><thead><tr><th>라운드</th><th>날짜</th><th>내용</th><th class="num">통과</th><th class="num">의사 협진</th><th class="num">환자 협진</th><th class="num">응급</th></tr></thead><tbody></tbody></table></div>
+
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div id="panels"></div>
+  <noscript><div class="empty">이 페이지는 라운드 데이터(rounds-manifest.json)를 불러와 그리므로 자바스크립트가 필요합니다.</div></noscript>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var GH = 'https://github.com/Openhash-Gopang/hondi/tree/';
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function pct(a, b) { return b ? (a / b * 100).toFixed(0) + '%' : '-'; }
+  function gk(r, k) { var s = r.summary.by_group_kind[k]; return s ? s : null; }
+  function cell(s) { return s ? s.pass + '/' + s.n : '-'; }
+  function emerg(r) { var a = gk(r, 'doctor/emergency'), b = gk(r, 'patient/emergency'); if (!a && !b) return '-'; var p = (a ? a.pass : 0) + (b ? b.pass : 0), n = (a ? a.n : 0) + (b ? b.n : 0); return p + '/' + n; }
+  function consultCell(r, g) { return cell(gk(r, g + '/consult')); }
+
+  [['envBtn', 'envBox'], ['scoreBtn', 'scoreBox'], ['limitBtn', 'limitBox']].forEach(function (p) {
+    var b = document.getElementById(p[0]), x = document.getElementById(p[1]);
+    b.addEventListener('click', function () { var open = x.hidden; x.hidden = !open; b.setAttribute('aria-expanded', open ? 'true' : 'false'); });
+  });
+
+  function chart(rounds) {
+    var W = 640, H = 190, L = 34, B = 34, T = 22, n = rounds.length, bw = Math.min(70, (W - L - 10) / n - 16), step = (W - L - 10) / n;
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="라운드별 통과율 막대 그래프">';
+    [0, 50, 100].forEach(function (v) { var y = T + (H - T - B) * (1 - v / 100); s += '<line x1="' + L + '" x2="' + (W - 6) + '" y1="' + y + '" y2="' + y + '" stroke="#e5e7eb"/><text x="' + (L - 6) + '" y="' + (y + 4) + '" font-size="10" text-anchor="end">' + v + '%</text>'; });
+    rounds.forEach(function (r, i) {
+      var t = r.summary.total, h = (H - T - B) * (t.pass / t.n), x = L + step * i + (step - bw) / 2, y = H - B - h;
+      s += '<rect class="bar' + (t.n < 100 ? ' small' : '') + '" x="' + x + '" y="' + y + '" width="' + bw + '" height="' + h + '"/>';
+      s += '<text x="' + (x + bw / 2) + '" y="' + (y - 5) + '" font-size="11" text-anchor="middle">' + t.pass + '/' + t.n + '</text>';
+      s += '<text x="' + (x + bw / 2) + '" y="' + (H - B + 16) + '" font-size="11" text-anchor="middle">' + esc(r.label) + '</text>';
+    });
+    return s + '</svg>';
+  }
+
+  function failReasons(fr) {
+    var k = Object.keys(fr || {}); if (!k.length) return '<p style="font-size:12.5px;color:#6b7280">실패 없음</p>';
+    return '<div class="tw"><table><thead><tr><th>실패 사유</th><th class="num">건수</th></tr></thead><tbody>' + k.map(function (x) { return '<tr><td><code>' + esc(x) + '</code></td><td class="num">' + fr[x] + '</td></tr>'; }).join('') + '</tbody></table></div>';
+  }
+
+  function diff(prev, cur) {
+    if (!prev) return '';
+    var pm = {}; prev.cases.forEach(function (c) { pm[c.id] = c; });
+    var common = cur.cases.filter(function (c) { return pm[c.id]; });
+    if (!common.length) return '';
+    var up = [], down = [];
+    common.forEach(function (c) { var a = pm[c.id].status === 'LIVE-PASS', b = c.status === 'LIVE-PASS'; if (!a && b) up.push(c); if (a && !b) down.push(c); });
+    function li(c, arrow) { return '<li>' + esc(c.id) + ' <span style="color:#6b7280">(' + esc(c.group) + (c.expect_consult ? ' 협진' : ' 응급') + ')</span> — ' + esc(pm[c.id].reason) + ' → ' + esc(c.reason) + '</li>'; }
+    return '<div class="chg"><b>' + esc(prev.label) + ' 대비 변화</b> (공통 ' + common.length + '건)<ul><li>실패 → 통과 ' + up.length + '건' + (up.length ? '<ul>' + up.map(li).join('') + '</ul>' : '') + '</li><li>통과 → 실패 ' + down.length + '건' + (down.length ? '<ul>' + down.map(li).join('') + '</ul>' : '') + '</li></ul></div>';
+  }
+
+  function casesTable(r) {
+    var id = 'ct' + r.round;
+    var groups = ['doctor', 'patient'];
+    var h = '<div class="filters" data-for="' + id + '"><label><input type="checkbox" class="f-fail"> 실패만</label><select class="f-group"><option value="">의사·환자 모두</option><option value="doctor">의사</option><option value="patient">환자</option></select><select class="f-kind"><option value="">협진·응급 모두</option><option value="1">협진 기대</option><option value="0">응급 기대</option></select><span class="f-count" style="color:#6b7280"></span></div>';
+    h += '<div class="tw"><table id="' + id + '"><thead><tr><th>ID</th><th>구분</th><th>발화</th><th>기대 과목</th><th>호출 과목</th><th>결과</th></tr></thead><tbody>';
+    r.cases.forEach(function (c) {
+      var exp = c.expect_consult ? esc(c.expect.join(', ')) + (c.accept.length ? '<br><span style="color:#6b7280">허용: ' + esc(c.accept.join(', ')) + '</span>' : '') : '<span style="color:#6b7280">응급(119/109)</span>';
+      var ok = c.status === 'LIVE-PASS';
+      h += '<tr data-fail="' + (ok ? 0 : 1) + '" data-group="' + esc(c.group) + '" data-kind="' + (c.expect_consult ? 1 : 0) + '"><td>' + esc(c.id) + '</td><td>' + (c.group === 'doctor' ? '의사' : '환자') + '</td><td class="utt"><div class="t" title="클릭하면 펼칩니다">' + esc(c.utterance) + '</div></td><td>' + exp + '</td><td>' + (c.called.length ? esc(c.called.join(', ')) : '<span style="color:#9ca3af">없음</span>') + '</td><td><span class="pill ' + (ok ? 'p-ok' : 'p-ng') + '">' + (ok ? 'PASS' : 'FAIL') + '</span><br><span style="font-size:11px;color:#6b7280">' + esc(c.reason) + (c.match === 'accept' ? ' · 허용 과목' : '') + '</span></td></tr>';
+    });
+    return h + '</tbody></table></div>';
+  }
+
+  function bindFilters(root) {
+    root.querySelectorAll('.filters').forEach(function (f) {
+      var tbl = document.getElementById(f.getAttribute('data-for')), cnt = f.querySelector('.f-count');
+      function apply() {
+        var fail = f.querySelector('.f-fail').checked, g = f.querySelector('.f-group').value, k = f.querySelector('.f-kind').value, shown = 0, all = 0;
+        tbl.querySelectorAll('tbody tr').forEach(function (tr) {
+          all++;
+          var ok = (!fail || tr.dataset.fail === '1') && (!g || tr.dataset.group === g) && (!k || tr.dataset.kind === k);
+          tr.style.display = ok ? '' : 'none'; if (ok) shown++;
+        });
+        cnt.textContent = shown + ' / ' + all + '건 표시';
+      }
+      f.addEventListener('change', apply); apply();
+    });
+    root.querySelectorAll('td.utt .t').forEach(function (t) { t.addEventListener('click', function () { t.classList.toggle('open'); }); });
+  }
+
+  function roundPanel(r, prev) {
+    var t = r.summary.total, sm = r.summary;
+    var h = '<div class="rhead"><h2>' + esc(r.label) + ' — ' + esc(r.title) + '</h2><div class="meta">' + esc(r.date) + ' · 모델 ' + esc(r.model) + ' · SP 해시 <code>' + esc(r.sp_hash) + '</code></div>';
+    h += '<div class="stats"><div class="stat"><b>' + t.pass + '/' + t.n + '</b><span>통과 (' + pct(t.pass, t.n) + ')</span></div>';
+    ['doctor/consult:의사 협진', 'patient/consult:환자 협진', 'doctor/emergency:의사 응급', 'patient/emergency:환자 응급'].forEach(function (x) { var p = x.split(':'), s = gk(r, p[0]); if (s) h += '<div class="stat"><b>' + s.pass + '/' + s.n + '</b><span>' + p[1] + '</span></div>'; });
+    h += '<div class="stat"><b>' + (sm.truncated == null ? '-' : sm.truncated + '/' + sm.orch_calls) + '</b><span>출력 한도로 잘린 총괄 호출</span></div>';
+    h += '<div class="stat"><b>' + (sm.avg_ms ? (sm.avg_ms / 1000).toFixed(0) + '초' : '-') + '</b><span>건당 평균 시간</span></div></div>';
+    h += '<dl class="kv"><dt>바꾼 것</dt><dd>' + esc(r.changes) + '</dd><dt>확인한 것</dt><dd>' + esc(r.finding) + '</dd><dt>다음 라운드</dt><dd>' + esc(r.next) + '</dd></dl>';
+    h += '<div class="links"><a href="' + esc(r.results_csv) + '" download>결과 CSV 다운로드</a><a href="' + GH + esc(r.source_branch) + '" target="_blank" rel="noopener">원본 결과 브랜치(hondi)</a></div></div>';
+    h += diff(prev, r);
+    h += '<h3 style="font-size:13.5px;color:#0f172a;margin:6px 0 8px">실패 사유</h3>' + failReasons(sm.fail_reasons);
+    h += '<h3 style="font-size:13.5px;color:#0f172a;margin:14px 0 8px">시나리오별 결과 (' + r.cases.length + '건)</h3>' + casesTable(r);
+    return h;
+  }
+
+  function pendingPanel(p) {
+    return '<div class="rhead"><h2>' + esc(p.label) + ' — ' + esc(p.title) + '</h2><div class="meta">예정 · 아직 실행하지 않았습니다</div><dl class="kv"><dt>계획</dt><dd>' + esc(p.changes) + '</dd><dt>실행 전에 정한 기준</dt><dd>' + esc(p.criteria) + '</dd></dl></div><div class="empty">결과가 나오면 이 탭에 채웁니다.</div>';
+  }
+
+  function render(m) {
+    var rounds = m.rounds, pend = m.pending || [];
+    document.getElementById('chartBody').innerHTML = chart(rounds);
+    var tb = document.querySelector('#sumTable tbody');
+    tb.innerHTML = rounds.map(function (r) {
+      var t = r.summary.total;
+      return '<tr><td class="name"><b>' + esc(r.label) + '</b></td><td>' + esc(r.date) + '</td><td>' + esc(r.title) + '</td><td class="num">' + t.pass + '/' + t.n + ' (' + pct(t.pass, t.n) + ')</td><td class="num">' + consultCell(r, 'doctor') + '</td><td class="num">' + consultCell(r, 'patient') + '</td><td class="num">' + emerg(r) + '</td></tr>';
+    }).join('') + pend.map(function (p) { return '<tr><td class="name"><b>' + esc(p.label) + '</b></td><td>예정</td><td>' + esc(p.title) + '</td><td class="num" colspan="4" style="color:#9ca3af">결과 없음</td></tr>'; }).join('');
+    var tabs = document.getElementById('tabs'), panels = document.getElementById('panels');
+    var all = rounds.map(function (r, i) { return { key: r.label, dot: '', html: roundPanel(r, rounds[i - 1] && rounds[i - 1].cases.length ? rounds[i - 1] : null) }; })
+      .concat(pend.map(function (p) { return { key: p.label, dot: 'pend', html: pendingPanel(p) }; }));
+    tabs.innerHTML = all.map(function (x, i) { return '<button class="tab" role="tab" data-i="' + i + '">' + esc(x.key) + '<span class="dot ' + x.dot + '"></span></button>'; }).join('');
+    panels.innerHTML = all.map(function (x, i) { return '<div class="panel" data-i="' + i + '">' + x.html + '</div>'; }).join('');
+    bindFilters(panels);
+    function show(i) {
+      tabs.querySelectorAll('.tab').forEach(function (b) { b.classList.toggle('active', +b.dataset.i === i); b.setAttribute('aria-selected', +b.dataset.i === i ? 'true' : 'false'); });
+      panels.querySelectorAll('.panel').forEach(function (p) { p.classList.toggle('active', +p.dataset.i === i); });
+      try { history.replaceState(null, '', '#' + all[i].key); } catch (e) {}
+    }
+    tabs.addEventListener('click', function (e) { var b = e.target.closest('.tab'); if (b) show(+b.dataset.i); });
+    var want = (location.hash || '').slice(1), idx = all.map(function (x) { return x.key; }).indexOf(want);
+    show(idx >= 0 ? idx : rounds.length - 1);
+    window.addEventListener('hashchange', function () { var j = all.map(function (x) { return x.key; }).indexOf((location.hash || '').slice(1)); if (j >= 0) show(j); });
+  }
+
+  fetch('rounds-manifest.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(render).catch(function (e) {
+    document.getElementById('panels').innerHTML = '<div class="empty">라운드 데이터를 불러오지 못했습니다(rounds-manifest.json). 파일로 직접 열었다면 웹 서버에서 열어 주세요.</div>';
+    console.error(e);
+  });
+})();
+</script>
+</body>
+</html>
