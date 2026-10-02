@@ -91,19 +91,16 @@ td.utt .t.open{display:block}
 
 .tb{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center}
 .lead{font-size:13.5px;color:var(--txt4);max-width:760px;margin-bottom:14px}
-.page-h{font-size:22px;color:var(--txt);margin-bottom:6px}
+.backlink{display:inline-block;font-size:13.5px;color:var(--txt4);text-decoration:none;margin:18px 0 26px}
+.backlink:hover{color:var(--txt)}
+.page-h{font-size:26px;color:var(--txt);margin-bottom:10px}
+.wrap{max-width:1180px}
 .urgent{font-size:12.5px;color:var(--txt4);margin-bottom:16px}
 </style>
 </head>
 <body>
-<header class="dk-head"><div class="dk-head-in">
-  <a class="dk-back" href="library.html" aria-label="자료실로">←</a>
-  <a class="dk-logo" href="index.html"><span class="mk">⚕</span>K-Doctor</a>
-  <nav class="dk-nav">
-    <a href="library.html">전체</a><a href="library.html#sp">현행 SP</a><a href="library.html#tests">시험 보고</a><a href="library.html#review">검수·방법론</a><a class="on" href="rounds.html">평가 결과</a><a href="rounds.html#history">이전 버전</a>
-  </nav>
-</div></header>
 <div class="wrap">
+  <a class="backlink" href="library.html">← 자료실로 돌아가기</a>
   <h1 class="page-h">K-Doctor 라운드별 시험 기록</h1>
   <p class="lead">총괄 의사 AI(SP-29)가 진료과목별 AI를 실제로 호출하는지, 보고서가 검증을 통과하는지를 DeepSeek 라이브로 시험한 기록입니다. 시나리오 100건(의사 50: 총괄이 과목 의사 AI에게 자문을 구하는 형식 / 환자 50: 스스로 증상을 말함)으로 라운드마다 바꾼 것과 달라진 것을 적고, 사건마다 총괄 응답 → 협진 → 검수 → 재조정 → 최종 보고서를 열어 볼 수 있습니다.</p>
   <div class="notice"><b>면책 문구</b> — 이 기록은 자체 실험 결과이며 전문의 검토와 제3자 검증을 거치지 않았습니다. 통과는 "과목 호출과 보고서 검증이 기대대로 동작했다"는 뜻이지 진단이 맞았다는 뜻이 아닙니다. 아직 진행하지 않은 라운드는 계획만 있고 결과가 없습니다.</div>
@@ -177,11 +174,11 @@ td.utt .t.open{display:block}
     </ul>
   </div>
 
-  
-  <div class="chart" id="chart"><h2>라운드별 통과율</h2><div class="sub">막대 위 숫자는 통과/전체. 연한 막대는 10건만 돌린 라운드입니다.</div><div id="chartBody"></div></div>
-  <div class="tw"><table class="sumtab" id="sumTable"><thead><tr><th>라운드</th><th>날짜</th><th>내용</th><th class="num">통과</th><th class="num">의사 협진</th><th class="num">환자 협진</th><th class="num">응급</th></tr></thead><tbody></tbody></table></div>
   <div class="tabs" id="tabs" role="tablist"></div>
   <div id="panels"></div>
+  <h2 class="page-h" style="font-size:18px;margin:34px 0 10px">라운드 비교</h2>
+  <div class="chart" id="chart"><h2>라운드별 통과율</h2><div class="sub">막대 위 숫자는 통과/전체. 연한 막대는 10건만 돌린 라운드입니다.</div><div id="chartBody"></div></div>
+  <div class="tw"><table class="sumtab" id="sumTable"><thead><tr><th>라운드</th><th>날짜</th><th>내용</th><th class="num">통과</th><th class="num">의사 협진</th><th class="num">환자 협진</th><th class="num">응급</th></tr></thead><tbody></tbody></table></div>
   <noscript><div class="empty">이 페이지는 라운드 데이터(rounds-manifest.json)를 불러와 그리므로 자바스크립트가 필요합니다.</div></noscript>
 </div>
 <script>
@@ -287,7 +284,7 @@ td.utt .t.open{display:block}
     menus(m);
     var tabs = document.getElementById('tabs'), panels = document.getElementById('panels');
     ALL = rounds.map(function (r, i) { return { key: r.label, dot: '', csv: r.results_csv, html: roundPanel(r, rounds[i - 1] && rounds[i - 1].cases.length ? rounds[i - 1] : null) }; }).concat(pend.map(function (p) { return { key: p.label, dot: 'pend', csv: null, html: pendingPanel(p) }; }));
-    tabs.innerHTML = ALL.map(function (x, i) { return '<button class="tab" role="tab" data-i="' + i + '">' + esc(x.key) + '<span class="dot ' + x.dot + '"></span></button>'; }).join('');
+    tabs.innerHTML = ALL.map(function (x, i) { return '<button class="tab" role="tab" data-i="' + i + '">' + esc(/^R(\d+)$/.test(x.key) ? '라운드 ' + x.key.slice(1) : x.key) + '<span class="dot ' + x.dot + '"></span></button>'; }).join('');
     panels.innerHTML = ALL.map(function (x, i) { return '<div class="panel" data-i="' + i + '">' + x.html + '</div>'; }).join('');
     bindFilters(panels);
     tabs.addEventListener('click', function (e) { var b = e.target.closest('.tab'); if (b) { show(+b.dataset.i); try { history.replaceState(null, '', '#' + ALL[+b.dataset.i].key); } catch (er) {} } });

@@ -65,82 +65,40 @@ body {
   --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
 }
 
-/* ── 상단 안내 띠 + 내비게이션 (K-Law 페이지처럼 밝은 흰색 배경으로 변경, 2026-09-28) ── */
-.site-strip {
-  background: var(--bg-subtle); padding: 6px 20px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
-}
-.site-strip-text { color: var(--text3); font-size: 12px; font-family: 'Pretendard', sans-serif; text-decoration: none; }
-.site-strip-text:hover { color: var(--text); }
-.site-strip-support-btn {
-  display: inline-flex; align-items: center; flex-shrink: 0;
-  background: var(--brand-bg); color: var(--brand-dk); font-size: 11.5px; font-weight: 600;
-  padding: 3px 12px; border-radius: 20px; text-decoration: none;
-  border: 1px solid #a7f3d0; white-space: nowrap;
-  font-family: 'Pretendard', sans-serif;
-}
-.site-nav {
-  background: #ffffff; padding: 0 20px; display: flex; align-items: center;
-  height: 54px; gap: 16px; border-bottom: 1px solid var(--border);
-  position: sticky; top: 0; z-index: 1100;
-}
-.site-nav-logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; text-decoration: none; }
-.site-nav-logo .mark { width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, var(--brand), var(--brand-dk)); }
-.site-nav-logo span { color: var(--text); font-size: 16px; font-weight: 600; font-family: 'Pretendard', sans-serif; }
-.site-nav-links { display: flex; align-items: center; gap: 2px; flex: 1; overflow-x: auto; scrollbar-width: none; }
-.site-nav-links::-webkit-scrollbar { display: none; }
-.site-nav-links a {
-  color: var(--text3); font-size: 13.5px; padding: 17px 10px; text-decoration: none;
-  white-space: nowrap; border-bottom: 2px solid transparent; display: flex;
-  align-items: center; gap: 5px; font-family: 'Pretendard', sans-serif;
-  transition: color 0.15s;
-}
-.site-nav-links a:hover { color: var(--text); }
-.site-nav-highlight { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.site-nav-highlight a {
-  display: flex; align-items: center; gap: 5px;
-  background: var(--brand-bg);
-  border: 1px solid #a7f3d0; color: var(--brand-dk); font-size: 12.5px; font-weight: 600;
-  padding: 6px 13px; border-radius: 20px; white-space: nowrap;
-  text-decoration: none; font-family: 'Pretendard', sans-serif;
-  transition: background 0.15s, transform 0.1s;
-}
-.site-nav-highlight a:hover { background: var(--brand-lt); transform: translateY(-1px); }
-.site-nav-highlight a .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--brand); flex-shrink: 0; }
-@media (max-width: 900px) { .site-nav-highlight a span.label-text { display: none; } .site-nav-highlight a { padding: 6px 9px; } }
-
-/* ── 히어로 (밝은 흰색 배경, K-Law 페이지 톤) ── */
-.site-hero { background: #ffffff; padding: 75px 40px 62px; position: relative; border-bottom: 1px solid var(--border); }
-.site-hero-badge {
-  display: inline-flex; align-items: center; gap: 6px; background: var(--brand-bg);
-  color: var(--brand-dk); font-size: 12px; font-weight: 500; padding: 5px 12px;
-  border: 1px solid #a7f3d0; border-radius: 20px; margin-bottom: 20px; font-family: 'Pretendard', sans-serif;
-}
-.site-hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); }
-.site-hero h1 { font-size: 32px; font-weight: 500; line-height: 1.5; margin: 0 0 16px; max-width: 640px; font-family: 'Pretendard', sans-serif; }
-.site-hero h1 .l1 { color: var(--text); }
-.site-hero h1 .l2 { color: var(--brand-dk); }
-.site-hero-sub { color: var(--text3); font-size: 15px; line-height: 1.7; margin: 0 0 24px; max-width: 580px; font-family: 'Pretendard', sans-serif; }
-.site-hero-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
-.site-hero-actions a {
-  display: flex; align-items: center; gap: 5px;
-  background: var(--text);
-  border: 1px solid var(--text); color: #fff; font-size: 13.5px; font-weight: 600;
-  padding: 10px 20px; border-radius: 20px; white-space: nowrap;
-  text-decoration: none; font-family: 'Pretendard', sans-serif;
-  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
-}
-.site-hero-actions a:hover { background: #1e293b; box-shadow: var(--shadow-md); transform: translateY(-1px); }
-.site-hero-actions a:nth-child(2) { background: #fff; color: var(--text); border: 1px solid var(--border2); }
-.site-hero-actions a:nth-child(2):hover { background: var(--bg-subtle); }
-.site-hero-actions a .dot { background: var(--brand); }
-.site-hero-domains { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
-.site-hero-domains a {
-  font-size: 13px; font-weight: 500; color: var(--text3); text-decoration: none;
-  background: var(--bg-subtle); border: 1px solid var(--border); padding: 7px 14px; border-radius: 20px;
-  font-family: 'Pretendard', sans-serif; transition: background 0.15s, color 0.15s;
-}
-.site-hero-domains a:hover { background: var(--brand-bg); color: var(--brand-dk); border-color: #a7f3d0; }
+/* ── 어두운 상단 바 + 히어로 (klaw.hondi.net 자료실과 같은 방식, 2026-10-03) ── */
+html { scroll-padding-top: 72px; }
+:root { --dk:#0b1220; --dk2:#111a2e; --dk-bd:#243049; --dk-tx:#e5e7eb; --dk-tx2:#9ca3af; }
+.dk-head { background: var(--dk); border-bottom: 1px solid var(--dk-bd); position: sticky; top: 0; z-index: 1100; }
+.dk-head-in { max-width: 1180px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 12px; overflow-x: auto; scrollbar-width: none; }
+.dk-head-in::-webkit-scrollbar { display: none; }
+.dk-back { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #fff; color: var(--dk); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 20px; font-weight: 700; }
+.dk-logo { flex: none; display: flex; align-items: center; gap: 8px; color: #fff; font-weight: 700; font-size: 16px; text-decoration: none; margin-right: 6px; font-family: 'Pretendard', sans-serif; }
+.dk-logo .mk { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, var(--brand), var(--brand-dk)); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.dk-nav { display: flex; gap: 4px; }
+.dk-nav a { flex: none; white-space: nowrap; padding: 8px 14px; border-radius: 8px; color: var(--dk-tx2); text-decoration: none; font-size: 13.5px; font-weight: 600; font-family: 'Pretendard', sans-serif; }
+.dk-nav a:hover { color: #fff; }
+.dk-nav a.on { background: var(--dk-bd); color: #fff; }
+.dk-strip { background: var(--dk2); border-bottom: 1px solid var(--dk-bd); padding: 6px 20px; display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.dk-strip a.t { color: var(--dk-tx2); font-size: 12px; text-decoration: none; font-family: 'Pretendard', sans-serif; }
+.dk-strip a.t:hover { color: #fff; }
+.dk-strip a.b { display: inline-flex; align-items: center; background: transparent; color: #a7f3d0; font-size: 11.5px; font-weight: 600; padding: 3px 12px; border-radius: 20px; text-decoration: none; border: 1px solid var(--dk-bd); white-space: nowrap; font-family: 'Pretendard', sans-serif; }
+.dk-hero { background: var(--dk); color: var(--dk-tx); padding: 44px 0 34px; }
+.dk-hero-in { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+.dk-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--dk-bd); border-radius: 99px; padding: 6px 14px; font-size: 12.5px; font-weight: 600; color: #a7f3d0; margin-bottom: 16px; font-family: 'Pretendard', sans-serif; }
+.dk-badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--brand); display: inline-block; }
+.dk-hero h1 { font-size: 28px; font-weight: 700; line-height: 1.4; margin: 0 0 10px; max-width: 760px; font-family: 'Pretendard', sans-serif; }
+.dk-hero h1 .l1 { color: #fff; }
+.dk-hero h1 .l2 { color: var(--brand); }
+.dk-hero p.sub { max-width: 780px; color: var(--dk-tx2); font-size: 14px; line-height: 1.8; margin: 0 0 18px; font-family: 'Pretendard', sans-serif; }
+.dk-btns { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 22px; }
+.dk-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--dk-bd); border-radius: 10px; background: var(--dk2); color: var(--dk-tx); text-decoration: none; font-size: 13.5px; font-weight: 600; font-family: 'Pretendard', sans-serif; transition: border-color 0.15s, transform 0.1s; }
+.dk-btn:hover { border-color: #3b4a6b; transform: translateY(-1px); }
+.dk-stats { display: flex; flex-wrap: wrap; gap: 34px; border-top: 1px solid var(--dk-bd); padding-top: 20px; }
+.dk-stat b { display: block; font-size: 24px; color: var(--brand); font-variant-numeric: tabular-nums; font-family: 'Pretendard', sans-serif; }
+.dk-stat span { font-size: 12px; color: var(--dk-tx2); font-family: 'Pretendard', sans-serif; }
+.dk-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.dk-chips a { font-size: 12.5px; font-weight: 500; color: var(--dk-tx2); text-decoration: none; background: var(--dk2); border: 1px solid var(--dk-bd); padding: 6px 13px; border-radius: 20px; font-family: 'Pretendard', sans-serif; }
+.dk-chips a:hover { color: #fff; border-color: #3b4a6b; }
 
 /* ── 섹션 (klaw.html의 .section / .section-tag / .section-title / .section-body 그대로) ── */
 .section { padding: 88px 8%; }
@@ -247,56 +205,60 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
 
 @media (max-width: 900px) { .stage-grid, .metric-grid, .roadmap-grid, .register-grid { grid-template-columns: 1fr; } .stage-grid, .metric-grid { display: flex; flex-direction: column; } }
 @media (max-width: 640px) {
-  .site-nav { padding: 0 12px; }
-  .site-nav-links a span.label-text, .site-nav-links a { font-size: 12.5px; }
-  .site-hero { padding: 32px 20px 28px; }
-  .site-hero h1 { font-size: 24px; }
+  .dk-head-in { padding: 10px 12px; }
+  .dk-nav a { font-size: 12.5px; padding: 7px 11px; }
+  .dk-hero { padding: 30px 0 26px; }
+  .dk-hero h1 { font-size: 22px; }
+  .dk-stats { gap: 20px; }
   .section { padding: 56px 6%; }
 }
 </style>
 </head>
 <body>
 
-<div class="site-nav">
-  <a class="site-nav-logo" href="#top">
-    <span class="mark"></span>
-    <span>K-Doctor</span>
-  </a>
-  <nav class="site-nav-links">
+<header class="dk-head"><div class="dk-head-in">
+  <a class="dk-back" href="https://hondi.net" aria-label="혼디 홈으로">←</a>
+  <a class="dk-logo" href="#top"><span class="mk">⚕</span>K-Doctor</a>
+  <nav class="dk-nav">
+    <a class="on" href="#top">전체</a>
     <a href="#orchestration">협진 호출 흐름</a>
     <a href="#consult">진료 상담</a>
     <a href="#flow">진료 흐름</a>
     <a href="#specialties">진료과목</a>
     <a href="#methods">방법론 상세</a>
     <a href="#principles">핵심 원칙</a>
-    <a href="#roadmap">검증·로드맵</a><a href="library.html">자료실</a><a href="rounds.html">시험 라운드</a>
+    <a href="#roadmap">검증·로드맵</a>
+    <a href="library.html">자료실</a>
+    <a href="rounds.html">시험 라운드</a>
   </nav>
-  <div class="site-nav-highlight">
-    <a href="#roadmap"><span class="dot"></span><span class="label-text">진행 현황(1–10)</span></a>
-    <a href="https://github.com/Openhash-Gopang/hondi" target="_blank" rel="noopener"><span class="dot"></span><span class="label-text">구현 코드(hondi)</span></a>
-  </div>
-</div>
-<div class="site-strip">
-  <a class="site-strip-text" href="#roadmap">응급이면 즉시 119 · 자살예방상담전화 109 · 초안 단계(실사용자 대상 아님) · 진행 현황 보기 →</a>
-  <a class="site-strip-support-btn" href="https://estate.hondi.net" target="_blank" rel="noopener">K-Estate 보러 가기</a>
+</div></header>
+<div class="dk-strip">
+  <a class="t" href="#roadmap">응급이면 즉시 119 · 자살예방상담전화 109 · 초안 단계(실사용자 대상 아님) · 진행 현황 보기 →</a>
+  <a class="b" href="https://estate.hondi.net" target="_blank" rel="noopener">K-Estate 보러 가기</a>
 </div>
 
-<section class="site-hero" id="top">
-  <span class="site-hero-badge"><span class="dot"></span>K-Doctor · Hondi/Gopang 생태계</span>
+<section class="dk-hero" id="top"><div class="dk-hero-in">
+  <span class="dk-badge"><i></i>K-Doctor · Hondi/Gopang 생태계</span>
   <h1><span class="l1">진료과목별 AI가 증상을 듣고</span><br><span class="l2">진단 참고와 처치 제안을 돕습니다</span></h1>
-  <p class="site-hero-sub">의료인을 위한 임상 의사결정 지원 도구입니다. 증상(문자·사진)을 접수하면 위험 신호부터 선별하고, 진료과목별 전문 AI의 소견을 총괄 AI가 모아 진단 참고와 처방/처치 제안을 냅니다. 종합 확신도와 응급 전환은 AI가 아니라 결정론적 코드가 다시 계산합니다.</p>
-  <div class="site-hero-actions">
-    <a href="#consult"><span class="dot"></span>진료 상담</a>
-    <a href="#flow"><span class="dot"></span>진료 흐름 보기</a>
-    <a href="#specialties"><span class="dot"></span>진료과목</a>
-    <a href="https://github.com/Openhash-Gopang/hondi" target="_blank" rel="noopener"><span class="dot"></span>구현 코드 보기</a>
+  <p class="sub">의료인을 위한 임상 의사결정 지원 도구입니다. 증상(문자·사진)을 접수하면 위험 신호부터 선별하고, 진료과목별 전문 AI의 소견을 총괄 AI가 모아 진단 참고와 처방/처치 제안을 냅니다. 종합 확신도와 응급 전환은 AI가 아니라 결정론적 코드가 다시 계산합니다.</p>
+  <div class="dk-btns">
+    <a class="dk-btn" href="#consult">💬 진료 상담</a>
+    <a class="dk-btn" href="#flow">🩺 진료 흐름 보기</a>
+    <a class="dk-btn" href="#specialties">🏥 진료과목</a>
+    <a class="dk-btn" href="https://github.com/Openhash-Gopang/hondi" target="_blank" rel="noopener">🧩 구현 코드 보기</a>
+    <a class="dk-btn" href="rounds.html">📊 진단 성능 테스트</a>
   </div>
-  <div class="site-hero-domains">
+  <div class="dk-stats" id="dkStats">
+    <div class="dk-stat"><b>41개</b><span>진료과목 AI(26 + 내과 9 + 소아 6)</span></div>
+    <div class="dk-stat"><b>100건</b><span>시험 시나리오(의사 50 · 환자 50)</span></div>
+    <div class="dk-stat"><b id="dkLatest">R5 · 88/100</b><span id="dkLatestSub">최신 라운드 통과(과목 호출·보고서 검증)</span></div>
+  </div>
+  <div class="dk-chips">
     <a href="https://github.com/Openhash-Gopang/hondi/blob/main/prompts/SP-29_kdoctor_v0_1.txt" target="_blank" rel="noopener">SP-29 총괄 (초안)</a>
     <a href="https://github.com/Openhash-Gopang/hondi/blob/main/src/gopang/ai/hondi-doctor-verdict.js" target="_blank" rel="noopener">hondi-doctor-verdict.js</a>
     <a href="https://github.com/Openhash-Gopang/hondi/blob/main/docs/kdoctor/design-notes.md" target="_blank" rel="noopener">설계 노트</a>
   </div>
-</section>
+</div></section>
 
 <section class="section section-alt" id="orchestration">
   <div class="section-inner">
@@ -664,6 +626,20 @@ footer .copyright { max-width: 860px; margin: 18px auto 0; color: var(--text4); 
 <!-- 진료 상담 창 — 코드는 hondi 저장소(assets/kdoctor-chat-widget.js, kdoctor-chat-core.js)에 두고
      이 페이지는 컨테이너(#kdoctor-chat)만 둔다. hondi.net이 파일을 서빙해야 하고, worker.js
      ALLOWED_ORIGINS에 doctor.hondi.net이 등록돼야 /ai/chat 호출이 동작한다. -->
+<script>
+(function () {
+  try {
+    fetch('rounds-manifest.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (m) {
+      if (!m || !m.rounds || !m.rounds.length) return;
+      var done = m.rounds.filter(function (x) { return x.summary && x.summary.total && x.summary.total.n; });
+      if (!done.length) return;
+      var l = done[done.length - 1], t = l.summary.total;
+      document.getElementById('dkLatest').textContent = (l.label || ('R' + l.round)) + ' · ' + t.pass + '/' + t.n;
+      if (t.n < 100) document.getElementById('dkLatestSub').textContent = '최신 라운드 통과(앞 ' + t.n + '건만 시험)';
+    }).catch(function () {});
+  } catch (e) {}
+})();
+</script>
 <script type="module" src="https://hondi.net/assets/kdoctor-chat-widget.js"></script>
 
 </body>
