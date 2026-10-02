@@ -54,7 +54,15 @@
    "reason": "consulted_and_reported",
    "match": "primary",
    "turns": 3,
-   "ms": 87026
+   "ms": 87026,
+   "art": {
+    "orch": true,
+    "consults": false,
+    "report": false,
+    "check": false,
+    "reconcile": false,
+    "final": false
+   }
   },
   {
    "id": "kdoc-doctor-02",
@@ -70,7 +78,15 @@
    "reason": "no_consult",
    "match": null,
    "turns": 3,
-   "ms": 44157
+   "ms": 44157,
+   "art": {
+    "orch": true,
+    "consults": false,
+    "report": false,
+    "check": false,
+    "reconcile": false,
+    "final": false
+   }
   },
   {
    "id": "kdoc-doctor-03",
@@ -91,7 +107,15 @@
    "reason": "no_report",
    "match": "primary",
    "turns": 3,
-   "ms": 96170
+   "ms": 96170,
+   "art": {
+    "orch": true,
+    "consults": false,
+    "report": false,
+    "check": false,
+    "reconcile": false,
+    "final": false
+   }
   },
   {
    "id": "kdoc-doctor-04",
@@ -110,7 +134,15 @@
    "reason": "no_report",
    "match": "primary",
    "turns": 3,
-   "ms": 97594
+   "ms": 97594,
+   "art": {
+    "orch": true,
+    "consults": false,
+    "report": false,
+    "check": false,
+    "reconcile": false,
+    "final": false
+   }
   },
   {
    "id": "kdoc-doctor-05",
@@ -128,7 +160,15 @@
    "reason": "no_report",
    "match": "primary",
    "turns": 3,
-   "ms": 71182
+   "ms": 71182,
+   "art": {
+    "orch": true,
+    "consults": false,
+    "report": false,
+    "check": false,
+    "reconcile": false,
+    "final": false
+   }
   },
   {
    "id": "kdoc-doctor-06",
@@ -146,7 +186,15 @@
    "reason": "no_report",
    "match": "primary",
    "turns": 3,
-   "ms": 74674
+   "ms": 74674,
+   "art": {
+    "orch": true,
+    "consults": false,
+    "report": false,
+    "check": false,
+    "reconcile": false,
+    "final": false
+   }
   },
   {
    "id": "kdoc-doctor-07",
@@ -164,7 +212,15 @@
    "reason": "no_report",
    "match": "primary",
    "turns": 3,
-   "ms": 100064
+   "ms": 100064,
+   "art": {
+    "orch": true,
+    "consults": false,
+    "report": false,
+    "check": false,
+    "reconcile": false,
+    "final": false
+   }
   },
   {
    "id": "kdoc-doctor-08",
@@ -182,7 +238,15 @@
    "reason": "consulted_and_reported",
    "match": "primary",
    "turns": 3,
-   "ms": 84986
+   "ms": 84986,
+   "art": {
+    "orch": true,
+    "consults": false,
+    "report": false,
+    "check": false,
+    "reconcile": false,
+    "final": false
+   }
   },
   {
    "id": "kdoc-doctor-09",
@@ -201,7 +265,15 @@
    "reason": "consulted_and_reported",
    "match": "primary",
    "turns": 3,
-   "ms": 107433
+   "ms": 107433,
+   "art": {
+    "orch": true,
+    "consults": false,
+    "report": false,
+    "check": false,
+    "reconcile": false,
+    "final": false
+   }
   },
   {
    "id": "kdoc-doctor-10",
@@ -220,7 +292,15 @@
    "reason": "no_report",
    "match": "primary",
    "turns": 3,
-   "ms": 89880
+   "ms": 89880,
+   "art": {
+    "orch": true,
+    "consults": false,
+    "report": false,
+    "check": false,
+    "reconcile": false,
+    "final": false
+   }
   }
  ]
 }

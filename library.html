@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Doctor 자료실</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="doctor-shell.css">
+<style>
+.sec-h{font-size:22px;color:var(--txt);margin:6px 0 4px}
+.sec-s{color:var(--txt4);margin-bottom:16px;font-size:13.5px}
+.notice{background:var(--amb-bg);border:1px solid var(--amb-bd);border-radius:var(--r);padding:10px 14px;font-size:12.5px;color:var(--amb-tx);margin-bottom:22px}
+.grp{margin:26px 0 10px;font-size:15px;color:var(--txt)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.card h3{font-size:14px;color:var(--txt)}
+.card p{font-size:12.5px;color:var(--txt4);flex:1}
+.card .tag{font-size:11px;font-weight:700;color:var(--pri-dk)}
+.card a.go{align-self:flex-start;font-size:12.5px;font-weight:600;padding:6px 12px;border:1px solid var(--bdr2);border-radius:6px;text-decoration:none;color:var(--txt3)}
+.card a.go:hover{background:var(--bg);color:var(--txt)}
+</style>
+</head>
+<body>
+<header class="dk-head"><div class="dk-head-in">
+  <a class="dk-back" href="index.html" aria-label="K-Doctor 소개로">←</a>
+  <a class="dk-logo" href="index.html"><span class="mk">⚕</span>K-Doctor</a>
+  <nav class="dk-nav">
+    <a class="on" href="library.html">전체</a>
+    <a href="library.html#sp">현행 SP</a>
+    <a href="library.html#tests">시험 보고</a>
+    <a href="library.html#review">검수·방법론</a>
+    <a href="rounds.html">평가 결과</a>
+    <a href="rounds.html#history">이전 버전</a>
+  </nav>
+</div></header>
+
+<section class="dk-hero"><div class="dk-hero-in">
+  <div class="dk-badge"><i></i>라이브 시험 진행 중</div>
+  <h1>라이브 시험으로 검증하는 K-Doctor 진단·협진 흐름</h1>
+  <p>총괄 의사 AI가 진료과목별 AI를 실제로 호출하는지, 보고서가 검증을 통과하는지를 시나리오 100건으로 반복 시험합니다. 라운드마다 무엇을 바꾸고 무엇이 달라졌는지, 사건별 총괄 응답·협진·검수·재조정·최종 보고서까지 열어 볼 수 있습니다.</p>
+  <div class="dk-btns" id="btns">
+    <a class="dk-btn" href="#tests">📋 시나리오 100건 설계</a>
+    <a class="dk-btn hot" href="rounds.html">🧪 협진 호출 시험(라운드별 기록 보기)</a>
+    <a class="dk-btn" href="rounds.html#P1">🔍 독립 검수 파일럿</a>
+    <a class="dk-btn" href="rounds.html#history">🛠 SP 갱신 기록</a>
+    <a class="dk-btn" href="#review">📄 검수·재조정 설계</a>
+  </div>
+  <div class="dk-stats" id="stats">
+    <div class="dk-stat"><b>100건</b><span>시험 시나리오(의사 50 · 환자 50)</span></div>
+    <div class="dk-stat"><b id="sBest">-</b><span>최근 라운드 통과</span></div>
+    <div class="dk-stat"><b id="sRounds">-</b><span>실행한 라운드</span></div>
+    <div class="dk-stat"><b>41개</b><span>진료과목·세부 분과 SP</span></div>
+    <div class="dk-stat"><b>v0.1</b><span>검수 SP(SP-29K)</span></div>
+  </div>
+</div></section>
+
+<main class="wrap">
+  <h2 class="sec-h">K-Doctor 자료실</h2>
+  <p class="sec-s">총괄·과목·검수 SP 원문, 시험 시나리오, 설계 문서를 한곳에 모았습니다. 원문은 구현 저장소(hondi)의 파일로 연결됩니다.</p>
+  <div class="notice"><b>면책 문구</b> — 초안 단계이며 전문의 검토와 제3자 검증을 거치지 않았습니다. 진단·처방을 확정하지 않으며 실사용자 대상이 아닙니다. 응급이면 즉시 119, 자해·자살 생각이 있으면 109(24시간)에 연락하세요.</div>
+
+  <h3 class="grp" id="sp">현행 SP</h3>
+  <div class="cards">
+    <div class="card"><span class="tag">총괄</span><h3>SP-29 총괄 의사 AI</h3><p>접수·위험 신호 선별·협진 호출·최종 보고서·재조정. 독립 검수와 재조정 절 포함.</p><a class="go" href="https://github.com/Openhash-Gopang/hondi/blob/main/prompts/SP-29_kdoctor_v0_1.txt" target="_blank" rel="noopener">원문 보기</a></div>
+    <div class="card"><span class="tag">검수</span><h3>SP-29K 검수 AI (v0.1)</h3><p>인용 대조·구조적 열거·프레임 대체·대상 대조·이득/위해·결정 규범 의존(C-1~C-6).</p><a class="go" href="https://github.com/Openhash-Gopang/hondi/blob/main/prompts/SP-29K_kdoctor_check_v0_1.txt" target="_blank" rel="noopener">원문 보기</a></div>
+    <div class="card"><span class="tag">과목</span><h3>진료과목 SP 41개</h3><p>전문과목 26개와 내과 9·소아 6 세부 분과. 공통 골격과 함께 조립됩니다.</p><a class="go" href="https://github.com/Openhash-Gopang/hondi/tree/main/prompts" target="_blank" rel="noopener">폴더 보기</a></div>
+  </div>
+
+  <h3 class="grp" id="tests">시험 보고</h3>
+  <div class="cards">
+    <div class="card"><span class="tag">결과</span><h3>라운드별 시험 기록</h3><p>R1~R5의 통과율, 바꾼 것·확인한 것, 사건별 결과와 상세.</p><a class="go" href="rounds.html">라운드 기록 열기</a></div>
+    <div class="card"><span class="tag">시나리오</span><h3>시나리오 100건</h3><p>의사 50건(총괄이 과목 자문을 구함)과 환자 50건. 협진 기대 88건, 응급 기대 12건.</p><a class="go" href="https://github.com/Openhash-Gopang/hondi/blob/main/tests/live_smoketest/scenarios_kdoctor_consult_100_20261001.json" target="_blank" rel="noopener">JSON 보기</a></div>
+    <div class="card"><span class="tag">채점</span><h3>채점 기준</h3><p>PASS·FAIL 사유와 응급 증례 규칙, 평가 원칙.</p><a class="go" href="https://github.com/Openhash-Gopang/hondi/blob/main/docs/kdoctor/live-smoke-consult.md" target="_blank" rel="noopener">문서 보기</a></div>
+  </div>
+
+  <h3 class="grp" id="review">검수·방법론</h3>
+  <div class="cards">
+    <div class="card"><span class="tag">설계</span><h3>생성 → 독립 검수 → 재조정</h3><p>K-Law 방법론을 진료에 옮긴 표준 흐름. 역할 분리, 검수 모듈, 재조정 규약, 한계.</p><a class="go" href="https://github.com/Openhash-Gopang/hondi/blob/main/docs/kdoctor/review-pipeline.md" target="_blank" rel="noopener">문서 보기</a></div>
+    <div class="card"><span class="tag">파일럿</span><h3>검수 SP 오류 주입 파일럿</h3><p>결함 보고서 10건과 정상 대조 3건으로 검수 SP의 검출률·오경보를 잰다(예정).</p><a class="go" href="rounds.html#P1">계획 보기</a></div>
+    <div class="card"><span class="tag">구현</span><h3>구현 저장소</h3><p>협진 루프, 검증기, 워커, 러너와 워크플로.</p><a class="go" href="https://github.com/Openhash-Gopang/hondi" target="_blank" rel="noopener">hondi 열기</a></div>
+  </div>
+</main>
+<script>
+fetch('rounds-manifest.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(m){
+  var rs=m.rounds||[]; if(!rs.length)return; var l=rs[rs.length-1].summary.total;
+  document.getElementById('sBest').textContent=l.pass+'/'+l.n; document.getElementById('sRounds').textContent=rs.length+'회';
+}).catch(function(){});
+</script>
+</body>
+</html>

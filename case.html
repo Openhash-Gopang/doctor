@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Doctor 시험 사건 상세</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="doctor-shell.css">
+<style>
+.crumb{font-size:12.5px;color:var(--txt4);margin-bottom:10px}
+.crumb a{color:var(--txt4)}
+h1.t{font-size:20px;color:var(--txt);margin-bottom:6px}
+.meta{font-size:12.5px;color:var(--txt4);margin-bottom:14px}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:99px}
+.p-ok{background:var(--pri-bg);color:var(--pri-dk)}.p-ng{background:var(--red-bg);color:var(--red)}
+.anchors{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.anchors a{font-size:12.5px;font-weight:600;padding:5px 12px;border:1px solid var(--bdr2);border-radius:99px;text-decoration:none;color:var(--txt3);background:var(--sur)}
+.anchors a.off{color:#9ca3af;background:var(--bg)}
+section.s{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;margin-bottom:14px;scroll-margin-top:12px}
+section.s h2{font-size:14.5px;color:var(--txt);margin-bottom:8px}
+section.s h3{font-size:12.5px;color:var(--txt);margin:12px 0 4px}
+pre{white-space:pre-wrap;word-break:break-word;background:var(--bg);border:1px solid var(--bdr);border-radius:6px;padding:10px 12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.6;max-height:520px;overflow:auto;color:var(--txt2)}
+.none{color:var(--txt4);font-size:12.8px}
+.kvt{width:100%;border-collapse:collapse;font-size:12.5px}
+.kvt th{width:130px;text-align:left;color:var(--txt4);font-weight:600;vertical-align:top;padding:5px 8px 5px 0}
+.kvt td{padding:5px 0;color:var(--txt2)}
+ul.l{margin:4px 0 0 18px;font-size:12.8px}
+.nav2{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.nav2 a{font-size:13px;font-weight:600;text-decoration:none;padding:8px 14px;border:1px solid var(--bdr2);border-radius:8px;background:var(--sur);color:var(--txt3)}
+.nav2 a.off{visibility:hidden}
+.warn{background:var(--amb-bg);border:1px solid var(--amb-bd);border-radius:var(--r);padding:10px 14px;font-size:12.5px;color:var(--amb-tx);margin-bottom:14px}
+</style>
+</head>
+<body>
+<header class="dk-head"><div class="dk-head-in">
+  <a class="dk-back" href="rounds.html" aria-label="라운드 기록으로" id="backA">←</a>
+  <a class="dk-logo" href="index.html"><span class="mk">⚕</span>K-Doctor</a>
+  <nav class="dk-nav"><a href="library.html">전체</a><a href="library.html#sp">현행 SP</a><a href="library.html#tests">시험 보고</a><a href="library.html#review">검수·방법론</a><a class="on" href="rounds.html">평가 결과</a></nav>
+</div></header>
+<main class="wrap" id="main"><div class="none">불러오는 중…</div></main>
+<script>
+(function () {
+  'use strict';
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  var q = new URLSearchParams(location.search), R = Number(q.get('r')), ID = q.get('id') || '';
+  var main = document.getElementById('main');
+  if (!R || !/^[A-Za-z0-9_.-]+$/.test(ID)) { main.innerHTML = '<div class="none">잘못된 주소입니다. 라운드 기록에서 사건을 선택해 주세요.</div>'; return; }
+  document.getElementById('backA').href = 'rounds.html#R' + R;
+  function pre(t) { return '<pre>' + esc(t) + '</pre>'; }
+  function json(o) { return pre(JSON.stringify(o, null, 2)); }
+  function sect(id, title, body, has) { return '<section class="s" id="' + id + '"><h2>' + esc(title) + '</h2>' + (has ? body : '<div class="none">이 라운드에서는 저장하지 않았거나 해당 단계가 없었습니다.</div>') + '</section>'; }
+  function reportSummary(r) {
+    if (!r) return '';
+    var f = r.final || {}, p = f.primary || {}, h = '<table class="kvt"><tbody>';
+    h += '<tr><th>결론 유형</th><td>' + esc(f.claimed_kind) + '</td></tr><tr><th>진단 참고</th><td>' + esc(p.name || '(없음)') + '</td></tr>';
+    h += '<tr><th>긴급도</th><td>' + esc(r.triage && r.triage.level) + '</td></tr><tr><th>호출 과목</th><td>' + esc((r.specialties_consulted || []).map(function (x) { return x.id; }).join(', ') || '없음') + '</td></tr>';
+    h += '<tr><th>가설</th><td>' + esc((r.hypotheses || []).map(function (x) { return x.name; }).join(' · ')) + '</td></tr>';
+    if (r.confidence) h += '<tr><th>확신도</th><td>임상 ' + esc(r.confidence.clinical) + ' · 정보 ' + esc(r.confidence.information) + '</td></tr>';
+    return h + '</tbody></table>';
+  }
+  function parseFindings(t) {
+    var out = [], re = /\[FINDING\s*\|\s*(C-\d)\s*\|\s*(HIGH|MED|LOW)\s*\|\s*결론영향\s*:\s*(있음|없음|불명)\s*\|([^\]]*)\]/g, m;
+    while ((m = re.exec(t || '')) !== null) out.push({ m: m[1], s: m[2], i: m[3], t: m[4].trim() });
+    var v = /\[CHECK_VERDICT:\s*([^\]|]+)/.exec(t || '');
+    return { f: out, v: v ? v[1].trim() : null };
+  }
+  function page(d, siblings) {
+    var ok = d.status === 'LIVE-PASS';
+    var consults = d.consult_texts, qs = d.consult_questions || [];
+    var has = { orch: d.orchestrator && d.orchestrator.length, consult: qs.length || consults, report: d.report, check: d.check, reconcile: d.reconcile, final: d.final_report };
+    var h = '<div class="crumb"><a href="library.html">자료실</a> › <a href="rounds.html#R' + d.round + '">라운드 ' + d.round + '</a> › ' + esc(d.id) + '</div>';
+    h += '<h1 class="t">' + esc(d.id) + ' <span class="pill ' + (ok ? 'p-ok' : 'p-ng') + '">' + (ok ? '통과' : '실패') + '</span></h1>';
+    h += '<div class="meta">' + (d.group === 'doctor' ? '의사 발화(총괄이 과목 자문을 구함)' : '환자 발화') + ' · ' + (d.expect_consult ? '협진 기대: ' + esc(d.expect.join(', ')) + (d.accept.length ? ' (허용: ' + esc(d.accept.join(', ')) + ')' : '') : '응급 기대(119/109 안내)') + ' · 호출: ' + (d.called.length ? esc(d.called.join(', ')) : '없음') + ' · 채점 사유 <code>' + esc(d.reason) + '</code>' + (d.ms ? ' · ' + (d.ms / 1000).toFixed(0) + '초' : '') + '</div>';
+    var secs = [['utt', '발화', true], ['orch', '총괄 응답', has.orch], ['consult', '협진', has.consult], ['report', '총괄 보고서', has.report], ['check', '검수', has.check], ['reconcile', '재조정', has.reconcile], ['final', '최종 보고서', has.final]];
+    h += '<div class="anchors">' + secs.map(function (s) { return '<a href="#' + s[0] + '" class="' + (s[2] ? '' : 'off') + '">' + s[1] + '</a>'; }).join('') + '</div>';
+    h += '<div class="warn">시험 기록입니다. 진단·처방이 아니며 전문의 검토를 거치지 않았습니다.</div>';
+    h += sect('utt', '발화(시나리오 입력)', pre(d.utterance), true);
+    var ob = (d.orchestrator || []).map(function (t, i) { return '<h3>총괄 응답 ' + (i + 1) + '</h3>' + pre(t); }).join('');
+    h += sect('orch', '총괄 응답 (' + (d.orchestrator || []).length + '회)', ob, has.orch);
+    var cb = '';
+    if (qs.length) cb += '<h3>총괄이 한 질문</h3><ul class="l">' + qs.map(function (x) { return '<li><b>' + esc(x.id) + '</b> — ' + esc(x.question) + '</li>'; }).join('') + '</ul>';
+    if (consults) cb += '<h3>과목 소견 원문</h3>' + consults.map(pre).join('');
+    else if (qs.length) cb += '<p class="none" style="margin-top:8px">과목 소견 원문은 라운드 6부터 저장합니다.</p>';
+    h += sect('consult', '협진', cb, has.consult);
+    h += sect('report', '총괄 보고서 (검증 ' + (d.validated_ok ? '통과' : '실패' + ((d.validation_errors || []).length ? ': ' + esc(JSON.stringify(d.validation_errors)) : '')) + ')', reportSummary(d.report) + '<h3>JSON 원문</h3>' + json(d.report), has.report);
+    var ck = '';
+    if (d.check) { var pf = parseFindings(d.check); ck += '<table class="kvt"><tbody><tr><th>판정</th><td><b>' + esc(pf.v || '(판정 줄 없음)') + '</b></td></tr><tr><th>지적</th><td>' + (pf.f.length ? '<ul class="l">' + pf.f.map(function (x) { return '<li><code>' + esc(x.m) + '</code> ' + esc(x.s) + ' · 결론영향 ' + esc(x.i) + ' — ' + esc(x.t) + '</li>'; }).join('') + '</ul>' : '없음') + '</td></tr></tbody></table><h3>검수 원문</h3>' + pre(d.check); }
+    h += sect('check', '독립 검수 (K-Doctor-Check)', ck, has.check);
+    h += sect('reconcile', '재조정 (총괄의 수용·반박)', d.reconcile ? pre(d.reconcile) : '', has.reconcile);
+    h += sect('final', '최종 보고서', d.final_report ? reportSummary(d.final_report) + '<h3>JSON 원문</h3>' + json(d.final_report) : '', has.final);
+    var i = siblings.indexOf(d.id), prev = siblings[i - 1], next = siblings[i + 1];
+    h += '<div class="nav2"><a class="' + (prev ? '' : 'off') + '" href="case.html?r=' + d.round + '&id=' + encodeURIComponent(prev || '') + '">← ' + esc(prev || '') + '</a><a href="rounds.html#R' + d.round + '">라운드 ' + d.round + ' 표로</a><a class="' + (next ? '' : 'off') + '" href="case.html?r=' + d.round + '&id=' + encodeURIComponent(next || '') + '">' + esc(next || '') + ' →</a></div>';
+    return h;
+  }
+  var base = 'rounds/r' + String(R).padStart(2, '0') + '/';
+  Promise.all([fetch(base + 'cases/' + encodeURIComponent(ID) + '.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }), fetch('rounds-manifest.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).catch(function () { return null; })])
+    .then(function (a) {
+      var m = a[1], rd = m && m.rounds.filter(function (x) { return x.round === R; })[0];
+      var sib = rd ? rd.cases.map(function (c) { return c.id; }) : [ID];
+      main.innerHTML = page(a[0], sib); document.title = 'K-Doctor ' + ID + ' · 라운드 ' + R;
+      if (location.hash) { var el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView(); }
+    }).catch(function () { main.innerHTML = '<div class="none">이 사건의 상세 파일을 찾지 못했습니다(' + esc(base) + 'cases/' + esc(ID) + '.json).</div>'; });
+})();
+</script>
+</body>
+</html>
