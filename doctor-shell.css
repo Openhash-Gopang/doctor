@@ -1,0 +1,40 @@
+/* doctor-shell.css — library.html · rounds.html · case.html 공용 (klaw.hondi.net 자료실과 같은 어두운 헤더·히어로) */
+:root{
+  --bg:#f8f9fa; --sur:#ffffff; --bdr:#e5e7eb; --bdr2:#d1d5db;
+  --txt:#0f172a; --txt2:#1e293b; --txt3:#374151; --txt4:#6b7280;
+  --pri:#3ecf8e; --pri-dk:#1a9e6a; --pri-bg:#f0fdf8;
+  --amb-bg:#fffbeb; --amb-bd:#fde68a; --amb-tx:#78350f;
+  --red:#dc2626; --red-bg:#fef2f2; --blue-bg:#eef2ff; --blue-bd:#c7d2fe; --blue-tx:#3730a3;
+  --dk:#0b1220; --dk2:#111a2e; --dk-bd:#243049; --dk-tx:#e5e7eb; --dk-tx2:#9ca3af; --acc:#6366f1;
+  --font:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif; --r:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--txt3);font-size:13.5px;line-height:1.7}
+a{color:var(--pri-dk)}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.8px;background:var(--bg);border:1px solid var(--bdr);border-radius:4px;padding:0 4px}
+/* 어두운 상단 막대 */
+.dk-head{background:var(--dk);border-bottom:1px solid var(--dk-bd)}
+.dk-head-in{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:12px;overflow-x:auto}
+.dk-back{flex:none;width:40px;height:40px;border-radius:50%;background:#fff;color:var(--dk);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:20px;font-weight:700}
+.dk-logo{flex:none;display:flex;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:16px;text-decoration:none;margin-right:6px}
+.dk-logo .mk{width:28px;height:28px;border-radius:7px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:14px}
+.dk-nav{display:flex;gap:4px}
+.dk-nav a{flex:none;white-space:nowrap;padding:8px 14px;border-radius:8px;color:var(--dk-tx2);text-decoration:none;font-size:13.5px;font-weight:600}
+.dk-nav a:hover{color:#fff}
+.dk-nav a.on{background:var(--dk-bd);color:#fff}
+/* 히어로 */
+.dk-hero{background:var(--dk);color:var(--dk-tx);padding:34px 0 30px}
+.dk-hero-in{max-width:1180px;margin:0 auto;padding:0 20px}
+.dk-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--dk-bd);border-radius:99px;padding:6px 14px;font-size:12.5px;font-weight:600;color:#a7f3d0;margin-bottom:16px}
+.dk-badge i{width:7px;height:7px;border-radius:50%;background:var(--pri);display:inline-block}
+.dk-hero h1{font-size:26px;color:#fff;margin-bottom:8px;line-height:1.35}
+.dk-hero p{max-width:760px;color:var(--dk-tx2);font-size:14px;margin-bottom:18px}
+.dk-btns{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 22px}
+.dk-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--dk-bd);border-radius:10px;background:var(--dk2);color:var(--dk-tx);text-decoration:none;font-size:13.5px;font-weight:600}
+.dk-btn:hover{border-color:#3b4a6b}
+.dk-btn.hot{border-color:var(--pri);box-shadow:0 0 0 1px var(--pri) inset}
+.dk-stats{display:flex;flex-wrap:wrap;gap:34px;border-top:1px solid var(--dk-bd);padding-top:20px}
+.dk-stat b{display:block;font-size:24px;color:var(--pri);font-variant-numeric:tabular-nums}
+.dk-stat span{font-size:12px;color:var(--dk-tx2)}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 90px}
+@media(max-width:720px){.dk-hero h1{font-size:21px}.dk-stats{gap:20px}.wrap{padding:20px 16px 70px}}
