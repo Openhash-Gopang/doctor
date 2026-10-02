@@ -1,0 +1,233 @@
+{
+ "round": 2,
+ "label": "R2",
+ "date": "2026-10-01",
+ "title": "진단 모드 — 실패 원인 분리",
+ "changes": "러너에 finish_reason·completion_tokens 기록, no_report를 truncated / no_tag / invalid / unclosed로 분리. SP·코드는 R1과 같다(총괄 출력 한도 3500토큰).",
+ "finding": "총괄 호출 43회 중 30회가 출력 한도에서 잘렸다(finish_reason=length). 협진을 부른 뒤 총괄이 장문으로 쓰다가 JSON 보고서가 중간에 끊긴다. 통과 1/10.",
+ "next": "총괄 출력을 줄이고(SP 간결 원칙) 출력 한도를 늘린다.",
+ "source_branch": "results/live-smoketest-kdoctor-consult-run2",
+ "sp_hash": "01f3813af471",
+ "finished": "2026-09-30T22:06:53.760Z",
+ "model": "deepseek-flash",
+ "summary": {
+  "total": {
+   "n": 10,
+   "pass": 1,
+   "fail": 9,
+   "error": 0,
+   "pass_rate": 0.1
+  },
+  "by_group_kind": {
+   "doctor/consult": {
+    "n": 10,
+    "pass": 1,
+    "fail": 9,
+    "error": 0,
+    "pass_rate": 0.1
+   }
+  },
+  "fail_reasons": {
+   "no_report_no_tag": 4,
+   "no_report_truncated": 4,
+   "no_report_invalid": 1
+  },
+  "truncated": 30,
+  "orch_calls": 43,
+  "avg_ms": 87340,
+  "avg_consults": 1.8
+ },
+ "results_csv": "rounds/r02/results.csv",
+ "cases": [
+  {
+   "id": "kdoc-doctor-01",
+   "group": "doctor",
+   "utterance": "62세 남성, 계단 오를 때 흉부 압박감이 3주째이고 휴식 시 호전됩니다. 고혈압·당뇨 병력이 있고 혈압 148/92입니다. 안정형 협심증 감별과 권고 검사에 대해 해당 분야 자문을 구해 진단 참고를 정리해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "cardiology"
+   ],
+   "accept": [],
+   "called": [
+    "cardiology",
+    "emergency"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report_no_tag",
+   "match": "primary",
+   "turns": 3,
+   "ms": 83867
+  },
+  {
+   "id": "kdoc-doctor-02",
+   "group": "doctor",
+   "utterance": "45세 여성, 반복되는 두근거림과 어지럼이 있고 심전도에서 RR 간격이 불규칙합니다. 심방세동 의심으로 전문 분야 자문을 받아 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "cardiology"
+   ],
+   "accept": [],
+   "called": [
+    "cardiology",
+    "endocrinology",
+    "neurology"
+   ],
+   "status": "LIVE-PASS",
+   "reason": "consulted_and_reported",
+   "match": "primary",
+   "turns": 3,
+   "ms": 121332
+  },
+  {
+   "id": "kdoc-doctor-03",
+   "group": "doctor",
+   "utterance": "55세 남성, 흡연 40갑년, 3개월간 만성 기침과 5kg 체중 감소가 있고 흉부 X선에서 우상엽 종괴 음영이 보입니다. 해당 분야 자문을 구해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "pulmonology"
+   ],
+   "accept": [
+    "hematology-oncology"
+   ],
+   "called": [
+    "pulmonology",
+    "thoracic-surgery"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report_truncated",
+   "match": "primary",
+   "turns": 3,
+   "ms": 87510
+  },
+  {
+   "id": "kdoc-doctor-04",
+   "group": "doctor",
+   "utterance": "50대 남성, 상복부 불편감 2개월과 흑색변 1회가 있고 NSAID를 장기 복용 중입니다. 내시경 시기와 위험도 평가에 대해 자문을 구해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "gastroenterology"
+   ],
+   "accept": [],
+   "called": [
+    "emergency",
+    "gastroenterology"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report_no_tag",
+   "match": "primary",
+   "turns": 3,
+   "ms": 84756
+  },
+  {
+   "id": "kdoc-doctor-05",
+   "group": "doctor",
+   "utterance": "AST·ALT 경도 상승이 6개월 지속되는 비음주 비만 환자입니다. 지방간 진행도 평가와 간섬유화 검사 선택을 전문 분야에 자문해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "gastroenterology"
+   ],
+   "accept": [],
+   "called": [
+    "gastroenterology"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report_invalid",
+   "match": "primary",
+   "turns": 3,
+   "ms": 86407
+  },
+  {
+   "id": "kdoc-doctor-06",
+   "group": "doctor",
+   "utterance": "34세 여성, 체중 감소, 심계항진, 안구 돌출이 있고 TSH 억제, fT4 상승입니다. 그레이브스병 치료 방침에 대해 자문을 구합니다.",
+   "expect_consult": true,
+   "expect": [
+    "endocrinology"
+   ],
+   "accept": [],
+   "called": [
+    "endocrinology"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report_no_tag",
+   "match": "primary",
+   "turns": 3,
+   "ms": 65231
+  },
+  {
+   "id": "kdoc-doctor-07",
+   "group": "doctor",
+   "utterance": "제2형 당뇨 환자로 메트포르민·SGLT2i 병용에도 HbA1c 9.2%입니다. 치료 강화 전략을 해당 분야에 자문해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "endocrinology"
+   ],
+   "accept": [],
+   "called": [
+    "endocrinology"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report_no_tag",
+   "match": "primary",
+   "turns": 3,
+   "ms": 78160
+  },
+  {
+   "id": "kdoc-doctor-08",
+   "group": "doctor",
+   "utterance": "67세 당뇨 환자로 eGFR이 3개월 사이 58에서 41로 떨어졌고 요단백이 +++입니다. 원인 감별과 약제 조정에 대해 자문을 구해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "nephrology"
+   ],
+   "accept": [],
+   "called": [
+    "endocrinology",
+    "nephrology"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report_truncated",
+   "match": "primary",
+   "turns": 3,
+   "ms": 93749
+  },
+  {
+   "id": "kdoc-doctor-09",
+   "group": "doctor",
+   "utterance": "72세 여성, 빈혈(Hb 8.1), 무통성 림프절종대, LDH 상승, 야간 발한이 있습니다. 림프종 가능성 평가를 전문 분야에 자문해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "hematology-oncology"
+   ],
+   "accept": [],
+   "called": [
+    "hematology-oncology",
+    "tuberculosis"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report_truncated",
+   "match": "primary",
+   "turns": 3,
+   "ms": 84064
+  },
+  {
+   "id": "kdoc-doctor-10",
+   "group": "doctor",
+   "utterance": "28세, 동남아 여행 후 7일째 주기적 오한·발열과 비장종대가 있습니다. 열대 감염 감별과 검사 우선순위를 자문해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "infectious-disease"
+   ],
+   "accept": [],
+   "called": [
+    "hematology-oncology",
+    "infectious-disease"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report_truncated",
+   "match": "primary",
+   "turns": 3,
+   "ms": 88325
+  }
+ ]
+}

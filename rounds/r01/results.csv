@@ -1,0 +1,11 @@
+﻿id,group,expect_consult,expect,accept,called,status,reason,match,turns,ms,utterance
+kdoc-doctor-01,doctor,True,cardiology,,cardiology,LIVE-PASS,consulted_and_reported,primary,3,87026,"62세 남성, 계단 오를 때 흉부 압박감이 3주째이고 휴식 시 호전됩니다. 고혈압·당뇨 병력이 있고 혈압 148/92입니다. 안정형 협심증 감별과 권고 검사에 대해 해당 분야 자문을 구해 진단 참고를 정리해 주세요."
+kdoc-doctor-02,doctor,True,cardiology,,,LIVE-FAIL,no_consult,,3,44157,"45세 여성, 반복되는 두근거림과 어지럼이 있고 심전도에서 RR 간격이 불규칙합니다. 심방세동 의심으로 전문 분야 자문을 받아 주세요."
+kdoc-doctor-03,doctor,True,pulmonology,hematology-oncology,hematology-oncology|pulmonology,LIVE-FAIL,no_report,primary,3,96170,"55세 남성, 흡연 40갑년, 3개월간 만성 기침과 5kg 체중 감소가 있고 흉부 X선에서 우상엽 종괴 음영이 보입니다. 해당 분야 자문을 구해 주세요."
+kdoc-doctor-04,doctor,True,gastroenterology,,gastroenterology|hematology-oncology,LIVE-FAIL,no_report,primary,3,97594,"50대 남성, 상복부 불편감 2개월과 흑색변 1회가 있고 NSAID를 장기 복용 중입니다. 내시경 시기와 위험도 평가에 대해 자문을 구해 주세요."
+kdoc-doctor-05,doctor,True,gastroenterology,,gastroenterology,LIVE-FAIL,no_report,primary,3,71182,AST·ALT 경도 상승이 6개월 지속되는 비음주 비만 환자입니다. 지방간 진행도 평가와 간섬유화 검사 선택을 전문 분야에 자문해 주세요.
+kdoc-doctor-06,doctor,True,endocrinology,,endocrinology,LIVE-FAIL,no_report,primary,3,74674,"34세 여성, 체중 감소, 심계항진, 안구 돌출이 있고 TSH 억제, fT4 상승입니다. 그레이브스병 치료 방침에 대해 자문을 구합니다."
+kdoc-doctor-07,doctor,True,endocrinology,,endocrinology,LIVE-FAIL,no_report,primary,3,100064,제2형 당뇨 환자로 메트포르민·SGLT2i 병용에도 HbA1c 9.2%입니다. 치료 강화 전략을 해당 분야에 자문해 주세요.
+kdoc-doctor-08,doctor,True,nephrology,,nephrology,LIVE-PASS,consulted_and_reported,primary,3,84986,67세 당뇨 환자로 eGFR이 3개월 사이 58에서 41로 떨어졌고 요단백이 +++입니다. 원인 감별과 약제 조정에 대해 자문을 구해 주세요.
+kdoc-doctor-09,doctor,True,hematology-oncology,,hematology-oncology|infectious-disease,LIVE-PASS,consulted_and_reported,primary,3,107433,"72세 여성, 빈혈(Hb 8.1), 무통성 림프절종대, LDH 상승, 야간 발한이 있습니다. 림프종 가능성 평가를 전문 분야에 자문해 주세요."
+kdoc-doctor-10,doctor,True,infectious-disease,,hematology-oncology|infectious-disease,LIVE-FAIL,no_report,primary,3,89880,"28세, 동남아 여행 후 7일째 주기적 오한·발열과 비장종대가 있습니다. 열대 감염 감별과 검사 우선순위를 자문해 주세요."

@@ -1,0 +1,226 @@
+{
+ "round": 1,
+ "label": "R1",
+ "date": "2026-10-01",
+ "title": "기준선 — 최초 라이브 10건",
+ "changes": "SP-29 v0.1 초안 그대로. 협진 호출 파이프라인(위젯과 같은 runTurn)을 DeepSeek 라이브로 처음 돌렸다. 시나리오 앞 10건.",
+ "finding": "10건 중 6건이 유효한 [DIAGNOSIS_REPORT]를 내지 못했다. 당시 러너는 실패 원인을 나누지 못해 \"no_report\"로만 기록했다.",
+ "next": "실패 원인을 나눠 기록하도록 러너를 진단 모드로 바꾼다(finish_reason·완료 토큰 수 기록).",
+ "source_branch": "results/live-smoketest-kdoctor-consult",
+ "sp_hash": "01f3813af471",
+ "finished": "2026-09-30T21:47:21.557Z",
+ "model": "deepseek-flash",
+ "summary": {
+  "total": {
+   "n": 10,
+   "pass": 3,
+   "fail": 7,
+   "error": 0,
+   "pass_rate": 0.3
+  },
+  "by_group_kind": {
+   "doctor/consult": {
+    "n": 10,
+    "pass": 3,
+    "fail": 7,
+    "error": 0,
+    "pass_rate": 0.3
+   }
+  },
+  "fail_reasons": {
+   "no_consult": 1,
+   "no_report": 6
+  },
+  "truncated": null,
+  "orch_calls": null,
+  "avg_ms": 85317,
+  "avg_consults": 1.6
+ },
+ "results_csv": "rounds/r01/results.csv",
+ "cases": [
+  {
+   "id": "kdoc-doctor-01",
+   "group": "doctor",
+   "utterance": "62세 남성, 계단 오를 때 흉부 압박감이 3주째이고 휴식 시 호전됩니다. 고혈압·당뇨 병력이 있고 혈압 148/92입니다. 안정형 협심증 감별과 권고 검사에 대해 해당 분야 자문을 구해 진단 참고를 정리해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "cardiology"
+   ],
+   "accept": [],
+   "called": [
+    "cardiology"
+   ],
+   "status": "LIVE-PASS",
+   "reason": "consulted_and_reported",
+   "match": "primary",
+   "turns": 3,
+   "ms": 87026
+  },
+  {
+   "id": "kdoc-doctor-02",
+   "group": "doctor",
+   "utterance": "45세 여성, 반복되는 두근거림과 어지럼이 있고 심전도에서 RR 간격이 불규칙합니다. 심방세동 의심으로 전문 분야 자문을 받아 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "cardiology"
+   ],
+   "accept": [],
+   "called": [],
+   "status": "LIVE-FAIL",
+   "reason": "no_consult",
+   "match": null,
+   "turns": 3,
+   "ms": 44157
+  },
+  {
+   "id": "kdoc-doctor-03",
+   "group": "doctor",
+   "utterance": "55세 남성, 흡연 40갑년, 3개월간 만성 기침과 5kg 체중 감소가 있고 흉부 X선에서 우상엽 종괴 음영이 보입니다. 해당 분야 자문을 구해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "pulmonology"
+   ],
+   "accept": [
+    "hematology-oncology"
+   ],
+   "called": [
+    "hematology-oncology",
+    "pulmonology"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report",
+   "match": "primary",
+   "turns": 3,
+   "ms": 96170
+  },
+  {
+   "id": "kdoc-doctor-04",
+   "group": "doctor",
+   "utterance": "50대 남성, 상복부 불편감 2개월과 흑색변 1회가 있고 NSAID를 장기 복용 중입니다. 내시경 시기와 위험도 평가에 대해 자문을 구해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "gastroenterology"
+   ],
+   "accept": [],
+   "called": [
+    "gastroenterology",
+    "hematology-oncology"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report",
+   "match": "primary",
+   "turns": 3,
+   "ms": 97594
+  },
+  {
+   "id": "kdoc-doctor-05",
+   "group": "doctor",
+   "utterance": "AST·ALT 경도 상승이 6개월 지속되는 비음주 비만 환자입니다. 지방간 진행도 평가와 간섬유화 검사 선택을 전문 분야에 자문해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "gastroenterology"
+   ],
+   "accept": [],
+   "called": [
+    "gastroenterology"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report",
+   "match": "primary",
+   "turns": 3,
+   "ms": 71182
+  },
+  {
+   "id": "kdoc-doctor-06",
+   "group": "doctor",
+   "utterance": "34세 여성, 체중 감소, 심계항진, 안구 돌출이 있고 TSH 억제, fT4 상승입니다. 그레이브스병 치료 방침에 대해 자문을 구합니다.",
+   "expect_consult": true,
+   "expect": [
+    "endocrinology"
+   ],
+   "accept": [],
+   "called": [
+    "endocrinology"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report",
+   "match": "primary",
+   "turns": 3,
+   "ms": 74674
+  },
+  {
+   "id": "kdoc-doctor-07",
+   "group": "doctor",
+   "utterance": "제2형 당뇨 환자로 메트포르민·SGLT2i 병용에도 HbA1c 9.2%입니다. 치료 강화 전략을 해당 분야에 자문해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "endocrinology"
+   ],
+   "accept": [],
+   "called": [
+    "endocrinology"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report",
+   "match": "primary",
+   "turns": 3,
+   "ms": 100064
+  },
+  {
+   "id": "kdoc-doctor-08",
+   "group": "doctor",
+   "utterance": "67세 당뇨 환자로 eGFR이 3개월 사이 58에서 41로 떨어졌고 요단백이 +++입니다. 원인 감별과 약제 조정에 대해 자문을 구해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "nephrology"
+   ],
+   "accept": [],
+   "called": [
+    "nephrology"
+   ],
+   "status": "LIVE-PASS",
+   "reason": "consulted_and_reported",
+   "match": "primary",
+   "turns": 3,
+   "ms": 84986
+  },
+  {
+   "id": "kdoc-doctor-09",
+   "group": "doctor",
+   "utterance": "72세 여성, 빈혈(Hb 8.1), 무통성 림프절종대, LDH 상승, 야간 발한이 있습니다. 림프종 가능성 평가를 전문 분야에 자문해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "hematology-oncology"
+   ],
+   "accept": [],
+   "called": [
+    "hematology-oncology",
+    "infectious-disease"
+   ],
+   "status": "LIVE-PASS",
+   "reason": "consulted_and_reported",
+   "match": "primary",
+   "turns": 3,
+   "ms": 107433
+  },
+  {
+   "id": "kdoc-doctor-10",
+   "group": "doctor",
+   "utterance": "28세, 동남아 여행 후 7일째 주기적 오한·발열과 비장종대가 있습니다. 열대 감염 감별과 검사 우선순위를 자문해 주세요.",
+   "expect_consult": true,
+   "expect": [
+    "infectious-disease"
+   ],
+   "accept": [],
+   "called": [
+    "hematology-oncology",
+    "infectious-disease"
+   ],
+   "status": "LIVE-FAIL",
+   "reason": "no_report",
+   "match": "primary",
+   "turns": 3,
+   "ms": 89880
+  }
+ ]
+}
