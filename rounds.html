@@ -177,7 +177,7 @@ td.utt .t.open{display:block}
   <div class="tabs" id="tabs" role="tablist"></div>
   <div id="panels"></div>
   <h2 class="page-h" style="font-size:18px;margin:34px 0 10px">라운드 비교</h2>
-  <div class="chart" id="chart"><h2>라운드별 통과율</h2><div class="sub">막대 위 숫자는 통과/전체. 연한 막대는 10건만 돌린 라운드입니다.</div><div id="chartBody"></div></div>
+  <div class="chart" id="chart"><h2>라운드별 통과율</h2><div class="sub">막대 위 숫자는 통과/전체. 연한 막대는 100건보다 적게 돌린 라운드입니다(C1은 복합 사례 24건으로 별도 구성).</div><div id="chartBody"></div></div>
   <div class="tw"><table class="sumtab" id="sumTable"><thead><tr><th>라운드</th><th>날짜</th><th>내용</th><th class="num">통과</th><th class="num">의사 협진</th><th class="num">환자 협진</th><th class="num">응급</th></tr></thead><tbody></tbody></table></div>
   <noscript><div class="empty">이 페이지는 라운드 데이터(rounds-manifest.json)를 불러와 그리므로 자바스크립트가 필요합니다.</div></noscript>
 </div>
@@ -283,7 +283,7 @@ td.utt .t.open{display:block}
     document.querySelector('#sumTable tbody').innerHTML = rounds.map(function (r) { var t = r.summary.total; return '<tr><td class="name"><b><a href="#' + esc(r.label) + '">' + esc(r.label) + '</a></b></td><td>' + esc(r.date) + '</td><td>' + esc(r.title) + '</td><td class="num">' + t.pass + '/' + t.n + ' (' + pct(t.pass, t.n) + ')</td><td class="num">' + cell(gk(r, 'doctor/consult')) + '</td><td class="num">' + cell(gk(r, 'patient/consult')) + '</td><td class="num">' + emerg(r) + '</td></tr>'; }).join('') + pend.map(function (p) { return '<tr><td class="name"><b><a href="#' + esc(p.label) + '">' + esc(p.label) + '</a></b></td><td>예정</td><td>' + esc(p.title) + '</td><td class="num" colspan="4" style="color:#9ca3af">결과 없음</td></tr>'; }).join('');
     menus(m);
     var tabs = document.getElementById('tabs'), panels = document.getElementById('panels');
-    ALL = rounds.map(function (r, i) { return { key: r.label, dot: '', csv: r.results_csv, html: roundPanel(r, rounds[i - 1] && rounds[i - 1].cases.length ? rounds[i - 1] : null) }; }).concat(pend.map(function (p) { return { key: p.label, dot: 'pend', csv: null, html: pendingPanel(p) }; }));
+    ALL = rounds.map(function (r, i) { return { key: r.label, dot: '', csv: r.results_csv, html: roundPanel(r, !r.complex && rounds[i - 1] && rounds[i - 1].cases.length && !rounds[i - 1].complex ? rounds[i - 1] : null) }; }).concat(pend.map(function (p) { return { key: p.label, dot: 'pend', csv: null, html: pendingPanel(p) }; }));
     tabs.innerHTML = ALL.map(function (x, i) { return '<button class="tab" role="tab" data-i="' + i + '">' + esc(/^R(\d+)$/.test(x.key) ? '라운드 ' + x.key.slice(1) : x.key) + '<span class="dot ' + x.dot + '"></span></button>'; }).join('');
     panels.innerHTML = ALL.map(function (x, i) { return '<div class="panel" data-i="' + i + '">' + x.html + '</div>'; }).join('');
     bindFilters(panels);
