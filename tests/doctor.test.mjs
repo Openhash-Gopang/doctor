@@ -128,3 +128,12 @@ test('머리말 오른쪽에 K-Doctor 링크, CNAME 은 doctor.hondi.net', () =>
   assert.ok(js.includes("kdoctor: 'https://doctor.hondi.net/kdoctor.html'"));
   assert.equal(readFileSync(new URL('../CNAME', import.meta.url), 'utf8').trim(), 'doctor.hondi.net');
 });
+test('대화창: 반투명 + 옅은 회색 바탕(D)', () => {
+  const c = readFileSync(new URL('../assets/themes.css', import.meta.url), 'utf8');
+  const m = /:root\[data-theme="d"\] \.chat \{ background: rgba\((\d+),(\d+),(\d+),([\d.]+)\)/.exec(c);
+  assert.ok(m, '.chat 배경 규칙');
+  const [r, g, b, a] = m.slice(1).map(Number);
+  assert.ok(r > 220 && g > 220 && b > 220, '옅은 회색(밝은 값)');
+  assert.ok(a > 0.3 && a < 0.8, '반투명');
+  assert.match(c, /\.chat iframe \{ background: transparent; opacity: \.8\d?;/);
+});
