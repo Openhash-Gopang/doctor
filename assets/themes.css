@@ -1,0 +1,100 @@
+/* 다섯 화면 디자인(A~E). tax.css 뒤에 불러옵니다. 색은 흰색·청색 계통만, 동작은 모든 디자인에서 같습니다. */
+
+/* A 글라스: 반투명 유리 카드, 입체 알약 버튼 */
+:root[data-theme="a"] body { background: linear-gradient(160deg, #eaf2fe 0%, #ffffff 45%, #d9e8fc 100%); background-attachment: fixed; }
+:root[data-theme="a"] .bar { background: rgba(255, 255, 255, .6); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+:root[data-theme="a"] .ask, :root[data-theme="a"] .doc, :root[data-theme="a"] .rbox { background: rgba(255, 255, 255, .62); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-color: rgba(255, 255, 255, .9); box-shadow: 0 10px 30px rgba(11, 87, 208, .12), inset 0 1px 0 #fff; }
+:root[data-theme="a"] .btn, :root[data-theme="a"] .chip { box-shadow: 0 3px 0 var(--primary-d), 0 6px 12px rgba(11, 87, 208, .2); border-radius: 26px; }
+:root[data-theme="a"] .btn.sec, :root[data-theme="a"] .chip { box-shadow: 0 3px 0 var(--tint2), 0 6px 12px rgba(11, 87, 208, .1); }
+
+/* B 머티리얼: Material 3 기본형 */
+:root[data-theme="b"] body { background: var(--soft); }
+:root[data-theme="b"] .bar { background: var(--soft); border-bottom: 0; }
+:root[data-theme="b"] .ask { background: var(--tint); border-color: transparent; border-radius: 32px; }
+:root[data-theme="b"] .ask:focus-within { background: var(--bg); }
+:root[data-theme="b"] .doc, :root[data-theme="b"] .rbox { background: var(--bg); border: 0; border-radius: 20px; }
+:root[data-theme="b"] .fld { background: var(--bg); border: 1px solid var(--sub); border-radius: 4px; }
+:root[data-theme="b"] .fw.pdv .fld { background: var(--tint); border-color: var(--primary); }
+
+/* C 에어리: 가운데 좁은 열, 큰 입력 칸 */
+:root[data-theme="c"] main.home { max-width: 640px; padding-top: 14vh; }
+:root[data-theme="c"] .ask { min-height: 76px; border-radius: 38px; border-width: 1px; padding: 6px 14px; }
+:root[data-theme="c"] .ask input[type=text] { font-size: 1.25rem; min-height: 60px; }
+:root[data-theme="c"] .count { text-align: center; }
+:root[data-theme="c"] .doc { border: 0; padding: 8px 0; }
+:root[data-theme="c"] .bar { border-bottom: 0; }
+
+/* D 워크스페이스(기본): 왼쪽 아이콘 레일, 올리면 옆으로 펼쳐짐 */
+:root[data-theme="d"] body { padding-left: 60px; }
+:root[data-theme="d"] .rail { display: flex; flex-direction: column; gap: 6px; position: fixed; top: 0; bottom: 0; left: 0; z-index: 60; width: 60px; padding: 12px 6px; background: var(--bg); border-right: 0; box-shadow: var(--e2); overflow: hidden; transition: width .2s ease, box-shadow .2s ease; }
+:root[data-theme="d"] .rail:hover, :root[data-theme="d"] .rail:focus-within { width: 224px; box-shadow: var(--e4); }
+:root[data-theme="d"] .rl { display: flex; align-items: center; gap: 14px; border-radius: 14px; color: var(--navy); text-decoration: none; white-space: nowrap; }
+:root[data-theme="d"] .rl:hover { background: var(--tint); }
+:root[data-theme="d"] .rl[aria-current="page"] .ri { box-shadow: var(--e1); }
+:root[data-theme="d"] .rl[aria-current="page"] { background: var(--tint); }
+:root[data-theme="d"] .ri { display: grid; place-items: center; flex: none; width: 48px; height: 48px; border-radius: 14px; overflow: hidden; }
+:root[data-theme="d"] .ri img { width: 48px; height: 48px; object-fit: cover; border-radius: 14px; display: block; }
+:root[data-theme="d"] .ri svg { width: 24px; height: 24px; }
+:root[data-theme="d"] .rt { font-size: 1rem; opacity: 0; transition: opacity .15s; }
+:root[data-theme="d"] .rail:hover .rt, :root[data-theme="d"] .rail:focus-within .rt { opacity: 1; }
+:root[data-theme="d"] .bnav, :root[data-theme="d"] .brand { display: none; }
+@media (max-width: 899px) {
+  :root[data-theme="d"] body { padding-left: 0; }
+  :root[data-theme="d"] .rail { display: none; }
+  :root[data-theme="d"] .bnav, :root[data-theme="d"] .brand { display: flex; }
+}
+
+/* E TDS 글라스: 격자 바탕, 눌린 입력칸, 이탤릭 그라데이션 제목 */
+:root[data-theme="e"] body { background-color: var(--bg); background-image: linear-gradient(rgba(11, 87, 208, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(11, 87, 208, .07) 1px, transparent 1px); background-size: 32px 32px; }
+:root[data-theme="e"] .bar { background: rgba(255, 255, 255, .7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+:root[data-theme="e"] .ask { background: var(--soft); border-color: var(--tint2); box-shadow: inset 0 3px 8px rgba(0, 32, 96, .16); }
+:root[data-theme="e"] .doc, :root[data-theme="e"] .rbox { background: rgba(255, 255, 255, .78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+:root[data-theme="e"] .dtitle, :root[data-theme="e"] .brand, :root[data-theme="e"] main.wide h1 { font-style: italic; color: var(--navy); background: linear-gradient(90deg, var(--navy), var(--primary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+:root[data-theme="e"] .fld { box-shadow: inset 0 2px 5px rgba(0, 32, 96, .14); }
+
+/* D 기본 화면 — 격자 + 유리 + 부유감 (2026-10-29 시안 확정) */
+:root[data-theme="d"] body { position: relative; isolation: isolate; background: transparent; }
+html:has(:root[data-theme="d"]), :root[data-theme="d"] { background: #eef3fb; }
+:root[data-theme="d"] body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(rgba(11,87,208,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(11,87,208,.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 55% 35%, #000 25%, transparent 100%); mask-image: radial-gradient(ellipse 85% 75% at 55% 35%, #000 25%, transparent 100%); }
+:root[data-theme="d"] body::after { content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none; background: radial-gradient(900px 500px at 65% -5%, #fff 0, rgba(255,255,255,0) 70%), #eef3fb; }
+:root[data-theme="d"] .bar, :root[data-theme="d"] .rail, :root[data-theme="d"] .tab, :root[data-theme="d"] .chat { background: rgba(255,255,255,.62); -webkit-backdrop-filter: blur(14px) saturate(1.5); backdrop-filter: blur(14px) saturate(1.5); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 8px 24px rgba(var(--sh), .10), 0 1px 3px rgba(var(--sh), .12); }
+:root[data-theme="d"] .rail:hover, :root[data-theme="d"] .rail:focus-within { background: rgba(255,255,255,.78); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), var(--e4); }
+:root[data-theme="d"] .ask { background: rgba(255,255,255,.88); box-shadow: inset 0 1px 0 #fff, 0 12px 32px rgba(var(--sh), .12), 0 2px 6px rgba(var(--sh), .08); }
+:root[data-theme="d"] .ask:focus-within { box-shadow: inset 0 1px 0 #fff, 0 12px 32px rgba(var(--sh), .14), 0 0 0 2px var(--primary); }
+:root[data-theme="d"] .doc { background: rgba(255,255,255,.96); box-shadow: inset 0 1px 0 #fff, 0 16px 40px rgba(var(--sh), .11), 0 2px 6px rgba(var(--sh), .08); }
+:root[data-theme="d"] .doc:hover, :root[data-theme="d"] .card:hover { transform: translateY(-2px); }
+:root[data-theme="d"] .btn:not(.sec):not(.sm), :root[data-theme="d"] .ic.ok { background: linear-gradient(180deg, #3f86ee 0%, #0b57d0 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 6px 14px rgba(11,87,208,.35); }
+:root[data-theme="d"] .btn:not(.sec):not(.sm):hover { transform: translateY(-1px); }
+:root[data-theme="d"] .chip { background: linear-gradient(180deg, #f4f8ff, #dce8fb); box-shadow: inset 0 1px 0 #fff, 0 4px 10px rgba(var(--sh), .12); }
+:root[data-theme="d"] .fld { background: #eaf1fd; box-shadow: inset 0 2px 5px rgba(var(--sh), .16); }
+:root[data-theme="d"] .fw.pdv .fld { background: var(--tint2); }
+:root[data-theme="d"] .list .row, :root[data-theme="d"] .card { background: rgba(255,255,255,.96); }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+:root[data-theme="d"] .fab { animation: bob 4.5s ease-in-out infinite; box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 12px 24px rgba(11,87,208,.38); }
+:root[data-theme="d"] .tab.t1 { animation: bob 5s ease-in-out infinite; }
+:root[data-theme="d"] .tab.t2 { animation: bob 5s ease-in-out -2s infinite; }
+@media (prefers-reduced-transparency: reduce) {
+  :root[data-theme="d"] .bar, :root[data-theme="d"] .rail, :root[data-theme="d"] .tab, :root[data-theme="d"] .chat { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
+/* D 데스크톱: 흰색 타이틀 바를 없애고, 제안·설정·K-Doctor·사용자 배지를 격자 바탕 위 오른쪽 위에 그대로 둔다 */
+@media (min-width: 900px) {
+  :root[data-theme="d"] .bar { position: static; background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; border: 0; }
+}
+
+/* D 데스크톱: 사용법·사이트의 특징은 오른쪽 탭 대신 왼쪽 메뉴 항목으로 연다 */
+:root[data-theme="d"] .rl.rp { width: 100%; padding: 0; border: 0; background: transparent; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+@media (min-width: 900px) {
+  :root[data-theme="d"] .tab { display: none; }
+}
+
+/* 대화창 반투명: 안쪽 대화 화면(iframe)은 다른 도메인이라 내부 배경을 바꿀 수 없으므로 화면 전체의 투명도를 낮추고, 뒤쪽은 유리 효과(blur)로 비친다 */
+:root[data-theme="d"] .chat { background: rgba(138,143,152,.5); }
+:root[data-theme="d"] .chat iframe { background: transparent; opacity: .8; color-scheme: normal; }
+:root[data-theme="d"] .chat-note { background: transparent; }
+@media (prefers-reduced-transparency: reduce) {
+  :root[data-theme="d"] .chat iframe { opacity: 1; background: #fff; }
+}
