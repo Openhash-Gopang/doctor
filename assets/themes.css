@@ -92,8 +92,8 @@ html:has(:root[data-theme="d"]), :root[data-theme="d"] { background: #eef3fb; }
 }
 
 /* 대화창 반투명: 안쪽 대화 화면(iframe)은 다른 도메인이라 내부 배경을 바꿀 수 없으므로 화면 전체의 투명도를 낮추고, 뒤쪽은 유리 효과(blur)로 비친다 */
-:root[data-theme="d"] .chat { background: rgba(138,143,152,.5); }
-:root[data-theme="d"] .chat iframe { background: transparent; opacity: .8; color-scheme: normal; }
+:root[data-theme="d"] .chat { background: rgba(234,237,241,.55); -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4); }  /* 옅은 회색 바탕 */
+:root[data-theme="d"] .chat iframe { background: transparent; opacity: .84; color-scheme: normal; }
 :root[data-theme="d"] .chat-note { background: transparent; }
 @media (prefers-reduced-transparency: reduce) {
   :root[data-theme="d"] .chat iframe { opacity: 1; background: #fff; }
