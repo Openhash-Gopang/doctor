@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>내 서류 목록 — 병원 & 의원</title>
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/doctor.css">
+<link rel="stylesheet" href="assets/themes.css">
+</head>
+<body>
+<div id="chrome"></div>
+<main class="wide">
+  <h1>내 서류 목록</h1>
+  <div class="sortbar">
+    <label for="sort">정렬</label>
+    <select id="sort"><option value="time">시간순</option><option value="title">명칭순</option><option value="client">환자순</option></select>
+  </div>
+  <ul class="list" id="list"></ul>
+</main>
+<footer class="foot">
+  <a href="https://hondi.net/" target="_blank" rel="noopener">나비웹</a>
+  <a href="https://hondi.net/pages/suggest.html" target="_blank" rel="noopener">제안</a>
+  <a href="https://hondi.net/desktop.html" target="_blank" rel="noopener">나비 플랫폼</a>
+</footer>
+<script src="assets/doctor.js"></script>
+<script>NaviDoctor.chrome('mydocs'); NaviDoctor.initMyDocs();</script>
+</body>
+</html>

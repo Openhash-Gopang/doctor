@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>설정 — 병원 & 의원</title>
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/doctor.css">
+<link rel="stylesheet" href="assets/themes.css">
+</head>
+<body>
+<div id="chrome"></div>
+<main class="wide">
+  <h1>화면 디자인</h1>
+  <div class="cards" id="cards" role="radiogroup" aria-label="화면 디자인">
+    <button type="button" class="card" role="radio" data-t="a"><div class="sw a"></div><b>A 글라스</b><span>반투명 유리 카드, 입체 알약 버튼</span></button>
+    <button type="button" class="card" role="radio" data-t="b"><div class="sw b"></div><b>B 머티리얼</b><span>둥근 검색 칸, 연한 면, 외곽선 입력 칸</span></button>
+    <button type="button" class="card" role="radio" data-t="c"><div class="sw c"></div><b>C 에어리</b><span>가운데 좁은 열, 큰 입력 칸</span></button>
+    <button type="button" class="card" role="radio" data-t="d"><div class="sw d"></div><b>D 워크스페이스 (기본)</b><span>왼쪽 아이콘 레일, 올리면 메뉴가 펼쳐짐</span></button>
+    <button type="button" class="card" role="radio" data-t="e"><div class="sw e"></div><b>E TDS 글라스</b><span>격자 바탕, 눌린 입력칸, 이탤릭 그라데이션 제목</span></button>
+  </div>
+</main>
+<footer class="foot">
+  <a href="https://hondi.net/" target="_blank" rel="noopener">나비웹</a>
+  <a href="https://hondi.net/pages/suggest.html" target="_blank" rel="noopener">제안</a>
+  <a href="https://hondi.net/desktop.html" target="_blank" rel="noopener">나비 플랫폼</a>
+</footer>
+<script src="assets/doctor.js"></script>
+<script>NaviDoctor.chrome('settings'); NaviDoctor.initSettings();</script>
+</body>
+</html>
